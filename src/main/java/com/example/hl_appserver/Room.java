@@ -8,6 +8,8 @@ public class Room{
 	int user_count;
 	List<String> score_list = new ArrayList<>();
 	List<String> user_list = new ArrayList<>();
+
+	List<Integer> hit_list = new ArrayList<>();
 	int timer;
 	List<Integer> pattern_list = new ArrayList<>();
 
