@@ -3,14 +3,12 @@ package com.example.hl_appserver;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Room{
 	int room_id;
 	int user_count;
-	List<String> score_list = new ArrayList<>();
+
 	List<String> user_list = new ArrayList<>();
-	List<Integer> hit_list = new ArrayList<>();
-	int timer;
-	List<Integer> pattern_list = new ArrayList<>();
 
 	public Room(int room_id){
 		this.room_id = room_id;
@@ -29,29 +27,13 @@ public class Room{
 		user_list.remove(user_id);
 	}
 
-	/*
-	public void enterRoom(int room_id){
 
-	}
-	*/
 	public void waitMatch(){
 		if(user_count == 4){
-			//GC startGame();
+			// sendMessage(クライアントの画面遷移を呼び出す)
 		}
 	}
 
-
-	public void checkCurrentPoint(){
-	}
-
-	public void startTimer(){
-	}
-
-	public void saveResult(){
-	}
-
-	public void getFinalResult(){
-	}
 
 	public void stopUserGame(int user_id){
 	}
