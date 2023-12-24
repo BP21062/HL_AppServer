@@ -28,7 +28,25 @@ public class AController{
 	public void recordResult(int room_id){
 	}
 
-	public void checkRoomState(int room_id){
+	public boolean checkRoomState(int room_id){
+		if(room_id == 1){
+			return game1.checkRoomState();
+		}
+		else if(room_id == 2){
+			return game2.checkRoomState();
+		}
+		else if(room_id == 3){
+			return game3.checkRoomState();
+		}
+		else if(room_id == 4){
+			return game4.checkRoomState();
+		}
+		else if(room_id == 5){
+			return game5.checkRoomState();
+		}
+		else {
+			return game6.checkRoomState();
+		}
 	}
 
 	public void startTimer(int room_id){
