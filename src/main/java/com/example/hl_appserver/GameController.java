@@ -27,9 +27,18 @@ public class GameController{
 	public void enterRoom(){
 	}
 
+	public boolean checkRoomState(){
+		if(room.user_count == 4){
+			return false;
+		}else{
+			return true;
+		}
+	}
 
 	public void checkConnectionState(){
+
 	}
+
 
 	public void startTimer(){
 	}
