@@ -1,9 +1,6 @@
 package com.example.hl_appserver;
 
 import com.google.gson.Gson;
-import sample.EndpointExample;
-import sample.EndpointSample;
-import sample.SampleMessage;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
