@@ -7,8 +7,9 @@ import java.util.List;
 public class Room{
 	int room_id;
 	int user_count;
-
 	List<String> user_list = new ArrayList<>();
+
+
 
 	public Room(int room_id){
 		this.room_id = room_id;
@@ -35,6 +36,7 @@ public class Room{
 	}
 
 
-	public void stopUserGame(int user_id){
+	public void stopUserGame(String user_id){
+		decreaseUserCount(user_id);
 	}
 }

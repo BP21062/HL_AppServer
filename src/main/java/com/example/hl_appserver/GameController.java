@@ -19,12 +19,14 @@ public class GameController{
 	}
 
 	public void startGame(){
+		game_loop=0;
 	}
 
 	public void displayFirstCard(){
 	}
 
-	public void enterRoom(){
+	public void enterRoom(String user_id){//引数をroom_idからuser_idに変更
+		room.increaseUserCount(user_id);
 	}
 
 	public boolean checkRoomState(){
@@ -40,9 +42,26 @@ public class GameController{
 	}
 
 
-	public void startTimer(){
+
+	public void startTimer(){//20秒のカウントダウン？
+		int REMAINING_TIME=20;//残り時間
+
+		for(int i=REMAINING_TIME;i>0;i--){
+			REMAINING_TIME=i;
+
+			try{
+				Thread.sleep(1000);//1秒
+			}catch(InterruptedException e){
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 
+	public void calculateScore(){
+
+	}
 
 	public void choiceDeckAndCardList(){
 
