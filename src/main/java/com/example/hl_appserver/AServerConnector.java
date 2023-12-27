@@ -5,12 +5,12 @@ import com.google.gson.Gson;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @ServerEndpoint("/")
 public class AServerConnector{
+	public DatabaseConnector databaseConnector;
+
 
 	public  AController aController;
 
@@ -34,8 +34,15 @@ public class AServerConnector{
 		// 変換：String -> SampleMessage
 		Message receivedMessage = gson.fromJson(message, Message.class);
 		//通信規則ごとの立ち回りを記述
-		if(receivedMessage.order.equals("---")){
-
+		if(receivedMessage.order.equals("1000")){
+			List<Integer> scoreList;
+			Message message5000 = new Message("5000",receivedMessage.messageContent.user_id);
+			scoreList=getScore(receivedMessage.messageContent.user_id);
+			message5000.messageContent.num_plays_score = scoreList.get(0);
+			message5000.messageContent.num_wins_score = scoreList.get(1);
+			message5000.messageContent.num_hits_score = scoreList.get(2);
+			String sendMessage5000 = gson.toJson(message5000);
+			sendMessage(session,sendMessage5000);
 		}
 	}
 
@@ -53,8 +60,14 @@ public class AServerConnector{
 	}
 
 
-	public Message sendMessage(Message message){
-		return message;
+	public void sendMessage(Session session, String message) {
+		//System.out.println("[WebSocketServerExample] sendMessage(): " + message);
+		try {
+			// 同期送信（sync）
+			session.getBasicRemote().sendText(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void connect(String server_name){}
@@ -69,7 +82,11 @@ public class AServerConnector{
 
 	public void getRule(){}
 
-	public void getScore(){}
+	public List<Integer> getScore(String user_id){
+		List<Integer> scoreList;
+		scoreList = databaseConnector.getScore(user_id);
+		return scoreList;
+	}
 
 	public void getCardList(){}
 
