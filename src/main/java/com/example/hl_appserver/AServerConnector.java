@@ -41,9 +41,14 @@ public class AServerConnector{
 			message5000.messageContent.num_plays_score = scoreList.get(0);
 			message5000.messageContent.num_wins_score = scoreList.get(1);
 			message5000.messageContent.num_hits_score = scoreList.get(2);
-			String sendMessage5000 = gson.toJson(message5000);
-			sendMessage(session,sendMessage5000);
+			sendMessage(session,message5000);
 		}
+		else if(receivedMessage.order.equals("1001")){
+			Message message5001 = new Message("5001",receivedMessage.messageContent.user_id);
+			message5001.messageContent.textDataList.add(getRule());
+			sendMessage(session,message5001);
+		}
+		else{}
 	}
 
 	@OnClose
@@ -60,11 +65,12 @@ public class AServerConnector{
 	}
 
 
-	public void sendMessage(Session session, String message) {
+	public void sendMessage(Session session, Message message) {
 		//System.out.println("[WebSocketServerExample] sendMessage(): " + message);
+		String send_message = gson.toJson(message);
 		try {
 			// 同期送信（sync）
-			session.getBasicRemote().sendText(message);
+			session.getBasicRemote().sendText(send_message);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -80,7 +86,11 @@ public class AServerConnector{
 
 	public void logout(String user_id){}
 
-	public void getRule(){}
+	public String getRule(){
+		String rule;
+		rule = databaseConnector.getRule();
+		return rule;
+	}
 
 	public List<Integer> getScore(String user_id){
 		List<Integer> scoreList;
