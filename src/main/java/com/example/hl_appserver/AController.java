@@ -1,14 +1,13 @@
 package com.example.hl_appserver;
 
 public class AController{
-
-	public GameController game1 = new GameController(1);
-	public GameController game2 = new GameController(2);
-	public GameController game3 = new GameController(3);
-	public GameController game4 = new GameController(4);
-	public GameController game5 = new GameController(5);
-	public GameController game6 = new GameController(6);
-
+	public GameController game1 = new GameController(1, this);
+	public GameController game2 = new GameController(2, this);
+	public GameController game3 = new GameController(3, this);
+	public GameController game4 = new GameController(4, this);
+	public GameController game5 = new GameController(5, this);
+	public GameController game6 = new GameController(6, this);
+	public AServerConnector aServerConnector = new AServerConnector(this);
 
 	public void displayCurrentPoint(int room_id){
 	}
@@ -54,7 +53,7 @@ public class AController{
 		 */
 	}
 
-	public void enterRoom(int room_id,String user_id){//引数にuser_idを追加
+	public void enterRoom(int room_id, String user_id){//引数にuser_idを追加
 		select(room_id).enterRoom(user_id);
 
 	}
@@ -71,24 +70,18 @@ public class AController{
 	public GameController select(int room_id){//room_idの判定用、if文重複を避ける為
 		if(room_id == 1){
 			return game1;
-		}
-		else if(room_id == 2){
+		}else if(room_id == 2){
 			return game2;
-		}
-		else if(room_id == 3){
+		}else if(room_id == 3){
 			return game3;
-		}
-		else if(room_id == 4){
+		}else if(room_id == 4){
 			return game4;
-		}
-		else if(room_id == 5){
+		}else if(room_id == 5){
 			return game5;
-		}
-		else {
+		}else{
 			return game6;
 		}
 	}
-
 
 
 	public void checkSuccessMessage(int room_id){
