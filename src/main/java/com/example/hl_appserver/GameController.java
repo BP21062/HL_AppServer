@@ -14,12 +14,14 @@ public class GameController{
 	public List<Integer> hit_list = new ArrayList<>(); //戦績管理用
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
-	public GameController(int room_id){
-		this.room = new Room(room_id);
+	public AController aController;
+
+	public GameController(int room_id, AController aController){
+		this.aController = aController; this.room = new Room(room_id);
 	}
 
 	public void startGame(){
-		game_loop=0;
+		game_loop = 0;
 	}
 
 	public void displayFirstCard(){
@@ -42,12 +44,11 @@ public class GameController{
 	}
 
 
-
 	public void startTimer(){//20秒のカウントダウン？
-		int REMAINING_TIME=20;//残り時間
+		int REMAINING_TIME = 20;//残り時間
 
-		for(int i=REMAINING_TIME;i>0;i--){
-			REMAINING_TIME=i;
+		for(int i = REMAINING_TIME; i > 0; i--){
+			REMAINING_TIME = i;
 
 			try{
 				Thread.sleep(1000);//1秒
