@@ -11,16 +11,20 @@ public class Room{
 
 
 	public Room(int room_id){
-		this.room_id = room_id; user_count = 0;
+		this.room_id = room_id;
+		user_count = 0;
 	}
 
 	public void increaseUserCount(String user_id){
-		user_count += 1; user_list.add(user_id); waitMatch();
+		user_count += 1;
+		user_list.add(user_id);
+		waitMatch();
 	}
 
 
 	public void decreaseUserCount(String user_id){
-		user_count -= 1; user_list.remove(user_id);
+		user_count -= 1;
+		user_list.remove(user_id);
 	}
 
 
