@@ -1,5 +1,13 @@
 package com.example.hl_appserver;
 
+import org.glassfish.tyrus.server.Server;
+
+import java.net.URI;
+
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
+
 public class AController{
 	public GameController game1 = new GameController(1, this);
 	public GameController game2 = new GameController(2, this);
@@ -8,9 +16,20 @@ public class AController{
 	public GameController game5 = new GameController(5, this);
 	public GameController game6 = new GameController(6, this);
 	public AServerConnector aServerConnector = new AServerConnector(this);
+	public LobbyRestApiConnector lobbyRestApiConnector = new LobbyRestApiConnector(this);
+	static String contextRoot = "/app";
+	static String protocol = "ws";
+	static int port = 8080;
+
+	public static final String restUri = "http://localhost:8081";
 
 	public void displayCurrentPoint(int room_id){
 	}
+
+	public void memorizeUser(String user_id){
+		aServerConnector.memorizeUser(user_id);
+	}
+
 
 	public void choiceDeckAndCardList(int room_id){
 	}
@@ -87,8 +106,18 @@ public class AController{
 	public void checkSuccessMessage(int room_id){
 	}
 
-	public static void main(String[] args){
+
+	public static void main(String[] args) throws Exception{
+		Server server = new Server(protocol, port, contextRoot, null, AServerConnector.class);
+		final ResourceConfig rc = new ResourceConfig().packages("");
+		final HttpServer restServer = GrizzlyHttpServerFactory.createHttpServer(URI.create(restUri), rc);
+
+		try{
+			server.start();
+			System.in.read();
+		}finally{
+			server.stop();
+			restServer.shutdownNow();
+		}
 	}
-
-
 }

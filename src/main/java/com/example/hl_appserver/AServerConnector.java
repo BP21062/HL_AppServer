@@ -9,6 +9,7 @@ import java.util.*;
 
 @ServerEndpoint("/")
 public class AServerConnector{
+	public List<String> memo_user_list = new ArrayList<>();
 	public DatabaseConnector databaseConnector;
 
 
@@ -76,6 +77,9 @@ public class AServerConnector{
 		}catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+	public void memorizeUser(String user_id){
+		memo_user_list.add(user_id);
 	}
 
 	public void connect(String server_name){

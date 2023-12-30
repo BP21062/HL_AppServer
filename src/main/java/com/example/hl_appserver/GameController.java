@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameController{
-	//ArrayList<Room> room_list = new ArrayList<>();
 	public Room room; //紐づいてるルームのインスタンス
 	public Card card1; //一枚目のカードを５枚保存する
 	public Card card2; //２枚目のカードを５枚保存する
@@ -76,5 +75,6 @@ public class GameController{
 	public void countPattern(){
 
 	}
+
 
 }
