@@ -17,7 +17,8 @@ public class GameController{
 	public AController aController;
 
 	public GameController(int room_id, AController aController){
-		this.aController = aController; this.room = new Room(room_id);
+		this.aController = aController;
+		this.room = new Room(room_id);
 	}
 
 	public void startGame(){

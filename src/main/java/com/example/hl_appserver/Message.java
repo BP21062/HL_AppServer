@@ -6,7 +6,8 @@ public class Message{
 	Boolean result;//画面遷移とかのチェック用？
 
 	public Message(String order, String user_id){
-		this.order = order; this.messageContent.user_id = user_id;
+		this.order = order;
+		this.messageContent.user_id = user_id;
 	}
 
 }
