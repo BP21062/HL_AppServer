@@ -1,5 +1,8 @@
 package com.example.hl_appserver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AController{
 	public GameController game1 = new GameController(1, this);
 	public GameController game2 = new GameController(2, this);
@@ -9,10 +12,23 @@ public class AController{
 	public GameController game6 = new GameController(6, this);
 	public AServerConnector aServerConnector = new AServerConnector(this);
 
-	public void displayCurrentPoint(int room_id){
-	}
+	public void displayCurrentPoint(List<Integer> score_list){}
 
 	public void choiceDeckAndCardList(int room_id){
+		//List<Integer>=aServerConnector.getCardList(room_id);
+		if(room_id == 1){
+			game1.choiceDeckAndCardList();
+		}else if(room_id == 2){
+			game2.choiceDeckAndCardList();
+		}else if(room_id == 3){
+			game3.choiceDeckAndCardList();
+		}else if(room_id == 4){
+			game4.choiceDeckAndCardList();
+		}else if(room_id == 5){
+			game5.choiceDeckAndCardList();
+		}else if(room_id == 6){
+			game6.choiceDeckAndCardList();
+		}
 	}
 
 	public void displayChoice(int room_id){
@@ -53,9 +69,33 @@ public class AController{
 		 */
 	}
 
+	public boolean checkConnection(){
+		return true;
+	}
+
 	public void enterRoom(int room_id, String user_id){//引数にuser_idを追加
 		select(room_id).enterRoom(user_id);
 
+	}
+
+	public void startGame(int room_id){
+		if(room_id == 1){
+			game1.startGame();
+		}else if(room_id == 2){
+			game2.startGame();
+		}else if(room_id == 3){
+			game3.startGame();
+		}else if(room_id == 4){
+			game4.startGame();
+		}else if(room_id == 5){
+			game5.startGame();
+		}else if(room_id == 6){
+			game6.startGame();
+		}
+	}
+
+	public Message sendMessage(Message message){
+		return message;
 	}
 
 	public void startTimer(int room_id){

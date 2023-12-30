@@ -10,7 +10,7 @@ public class GameController{
 	public Card card1; //一枚目のカードを５枚保存する
 	public Card card2; //２枚目のカードを５枚保存する
 	int game_loop; //ループ回数の保存用
-	public List<String> score_list = new ArrayList<>(); //スコア管理用
+	public List<Integer> score_list = new ArrayList<>(); //スコア管理用
 	public List<Integer> hit_list = new ArrayList<>(); //戦績管理用
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
@@ -23,6 +23,7 @@ public class GameController{
 
 	public void startGame(){
 		game_loop = 0;
+		aController.displayCurrentPoint(score_list);
 	}
 
 	public void displayFirstCard(){
@@ -31,6 +32,8 @@ public class GameController{
 	public void enterRoom(String user_id){//引数をroom_idからuser_idに変更
 		room.increaseUserCount(user_id);
 	}
+
+	public void decideRoom(){}
 
 	public boolean checkRoomState(){
 		if(room.user_count == 4){
@@ -44,6 +47,11 @@ public class GameController{
 
 	}
 
+	public void getUserCount(){}
+
+	public Message sendMessage(Message message){
+		return message;
+	}
 
 	public void startTimer(){//20秒のカウントダウン？
 		int REMAINING_TIME = 20;//残り時間
@@ -66,15 +74,22 @@ public class GameController{
 	}
 
 	public void choiceDeckAndCardList(){
-
+		card1.saveCard();
+		this.countPattern();
+		card2.saveCard();
+		//aController.displayChoice(card1);
 	}
 
-	public boolean checkSuccessMessage(){
-		return true;
+	public void checkSuccessMessage(){
+		if(game_loop == 0){
+			aController.choiceDeckAndCardList(room.room_id);
+		}
 	}
 
 	public void countPattern(){
 
 	}
+
+	public void setTimer(){}
 
 }

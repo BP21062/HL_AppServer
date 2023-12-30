@@ -105,7 +105,10 @@ public class AServerConnector{
 		return scoreList;
 	}
 
-	public void getCardList(){
+	public List<Integer> getCardList(int room_id){
+		List<Integer> card_list = null;//仮
+		//card_list = databaseConnector.getCardList();
+		return card_list;
 	}
 
 	public void getErrorInfo(){

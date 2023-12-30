@@ -27,6 +27,7 @@ public class Room{
 		user_list.remove(user_id);
 	}
 
+	public void enterRoom(int room_id){}
 
 	public void waitMatch(){
 		if(user_count == 4){
@@ -34,6 +35,13 @@ public class Room{
 		}
 	}
 
+	public void checkCurrentPoint(){}
+
+	public void startTimer(){}
+
+	public void saveResult(){}
+
+	public void getFinalResult(){}
 
 	public void stopUserGame(String user_id){
 		decreaseUserCount(user_id);
