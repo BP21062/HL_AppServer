@@ -58,6 +58,11 @@ public class AController{
 
 	}
 
+	public boolean checkConnection(){
+		aServerConnector.checkConnection();
+		return true;
+	}
+
 	public void startTimer(int room_id){
 		select(room_id).startTimer();
 

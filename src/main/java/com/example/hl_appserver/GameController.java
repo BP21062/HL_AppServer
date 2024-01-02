@@ -14,6 +14,7 @@ public class GameController{
 	public List<Integer> hit_list = new ArrayList<>(); //戦績管理用
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
+
 	public AController aController;
 
 	public GameController(int room_id, AController aController){
@@ -29,7 +30,13 @@ public class GameController{
 	}
 
 	public void enterRoom(String user_id){//引数をroom_idからuser_idに変更
-		room.increaseUserCount(user_id);
+		String R;//RoomのincreseUserCountからの返り値を保存
+		R=room.increaseUserCount(user_id);
+		if(R=="checkConnection"){
+			aController.checkConnection();
+		}else if(R=="startGame"){
+			//他のブランチでstartGameを実装していそうだったのでマージされたら追加します。
+		}
 	}
 
 	public boolean checkRoomState(){
