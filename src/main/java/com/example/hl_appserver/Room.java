@@ -19,7 +19,7 @@ public class Room{
 		user_count += 1;
 		user_list.add(user_id);
 		if(user_count<4){
-			waitMatch();
+			//waitMatch();
 			return "checkConnection";
 		}else{
 			return "startGame";
@@ -33,11 +33,15 @@ public class Room{
 	}
 
 
-	public void waitMatch(){
-		if(user_count == 4){
-			//sendMessage(クライアントの画面遷移を呼び出す)
-
+	public boolean waitMatch(){
+		if(user_count==4){
+			return true;
+		}else{
+			return false;
 		}
+
+
+		//sendMessage(クライアントの画面遷移を呼び出す)
 	}
 
 
