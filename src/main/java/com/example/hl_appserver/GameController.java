@@ -41,6 +41,7 @@ public class GameController{
 				if(WAIT==true){//部屋に4人集まった
 					break;
 				}
+				WAIT=room.waitMatch();
 			}
 			//sendMessageを呼んでgameを開始
 			//aController.sendMessage();
