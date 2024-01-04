@@ -15,6 +15,8 @@ public class AServerConnector{
 	public AController aController;
 
 	private static Set<Session> establishedSessions = Collections.synchronizedSet(new HashSet<Session>());
+	public static  Map<Session, String> user_map = new HashMap<>();
+	public static Map<String, Session> reverse_user_map = new HashMap<>();
 
 	static Gson gson = new Gson();
 
@@ -25,7 +27,6 @@ public class AServerConnector{
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig ec){
 		//セッションを記憶
-		boolean room1;
 		establishedSessions.add(session);
 		//ログに出力
 		System.out.println("[WebSocketServerSample] onOpen:" + session.getId());
@@ -49,7 +50,9 @@ public class AServerConnector{
 			Message message5001 = new Message("5001", receivedMessage.messageContent.user_id);
 			message5001.messageContent.textDataList.add(getRule());
 			sendMessage(session, message5001);
-		}else{
+		}else if(receivedMessage.order.equals("1999")){
+			user_map.put(session, receivedMessage.messageContent.user_id);
+			reverse_user_map.put(receivedMessage.messageContent.user_id, session);
 		}
 	}
 
@@ -57,13 +60,21 @@ public class AServerConnector{
 	public void onClose(Session session){
 		System.out.println("[WebSocketServerExample] onClose:" + session.getId());
 		establishedSessions.remove(session);
-
-		//logout関数
+		user_map.remove(session);
+		reverse_user_map.remove(user_map.get(session));
 	}
 
 	@OnError
 	public void onError(Session session, Throwable error){
 		System.out.println("[WebSocketServerExample] onError:" + session.getId());
+		try{
+			session.close();
+			//user_stop_game
+
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+
 	}
 
 
