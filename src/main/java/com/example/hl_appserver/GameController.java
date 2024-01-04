@@ -32,16 +32,16 @@ public class GameController{
 	public void enterRoom(String user_id){//引数をroom_idからuser_idに変更
 		String R;//RoomのincreseUserCountからの返り値を保存
 		Boolean WAIT;//waitMatchの返り値を保存,true(４人集まった) or false
-		R=room.increaseUserCount(user_id);
+		R = room.increaseUserCount(user_id);
 		if("checkConnection".equals(R)){//4人未満
 			aController.checkConnection();
-			WAIT=room.waitMatch();
-			while(WAIT==false){//4人未満
+			WAIT = room.waitMatch();
+			while(WAIT == false){//4人未満
 				aController.checkConnection();
-				if(WAIT==true){//部屋に4人集まった
+				if(WAIT == true){//部屋に4人集まった
 					break;
 				}
-				WAIT=room.waitMatch();
+				WAIT = room.waitMatch();
 			}
 			//sendMessageを呼んでgameを開始
 			//aController.sendMessage();
@@ -92,6 +92,17 @@ public class GameController{
 	}
 
 	public void countPattern(){
+
+	}
+
+	public void sendMessage(String user_id, String order){
+		Message message = new Message(user_id, order);
+		if(order.equals("1001")){
+			//通信規則に対しての操作
+		}else{
+		}
+
+		aController.sendMessage(message, user_id);
 
 	}
 

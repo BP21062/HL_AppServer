@@ -91,6 +91,10 @@ public class AController{
 
 	public void checkSuccessMessage(int room_id){
 	}
+	public void sendMessage(Message message, String user_id){
+		aServerConnector.sendMessage(AServerConnector.reverse_user_map.get(user_id), message);
+
+	}
 
 	public static void main(String[] args){
 	}
