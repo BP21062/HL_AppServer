@@ -3,6 +3,8 @@ package com.example.hl_appserver;
 import org.glassfish.tyrus.server.Server;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -105,6 +107,22 @@ public class AController{
 
 	public void checkSuccessMessage(int room_id){
 	}
+	/**
+	 * checkRoomCountメソッド
+	 * ルームの在室人数を返す
+	 * @return List<Integer>
+	 */
+	public List<Integer> checkRoomCount(){
+		List<Integer> user_count = new ArrayList<>();
+		user_count.add(game1.checkRoomCount());
+		user_count.add(game2.checkRoomCount());
+		user_count.add(game3.checkRoomCount());
+		user_count.add(game4.checkRoomCount());
+		user_count.add(game5.checkRoomCount());
+		user_count.add(game6.checkRoomCount());
+		return user_count;
+	}
+
 
 
 	public static void main(String[] args) throws Exception{

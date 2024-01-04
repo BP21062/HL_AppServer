@@ -75,6 +75,9 @@ public class GameController{
 	public void countPattern(){
 
 	}
+	public int checkRoomCount(){
+		return room.user_count;
+	}
 
 
 }
