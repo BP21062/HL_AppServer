@@ -14,6 +14,7 @@ public class GameController{
 	public List<Integer> hit_list = new ArrayList<>(); //戦績管理用
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
+
 	public AController aController;
 
 	public GameController(int room_id, AController aController){
@@ -29,7 +30,24 @@ public class GameController{
 	}
 
 	public void enterRoom(String user_id){//引数をroom_idからuser_idに変更
-		room.increaseUserCount(user_id);
+		String R;//RoomのincreseUserCountからの返り値を保存
+		Boolean WAIT;//waitMatchの返り値を保存,true(４人集まった) or false
+		R=room.increaseUserCount(user_id);
+		if("checkConnection".equals(R)){//4人未満
+			aController.checkConnection();
+			WAIT=room.waitMatch();
+			while(WAIT==false){//4人未満
+				aController.checkConnection();
+				if(WAIT==true){//部屋に4人集まった
+					break;
+				}
+				WAIT=room.waitMatch();
+			}
+			//sendMessageを呼んでgameを開始
+			//aController.sendMessage();
+		}else if("startGame".equals(R)){
+			//他のブランチでstartGameを実装していそうだったのでマージされたら追加します。
+		}
 	}
 
 	public boolean checkRoomState(){

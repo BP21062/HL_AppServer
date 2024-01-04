@@ -81,13 +81,16 @@ public class AServerConnector{
 	public void connect(String server_name){
 	}
 
-	public void enterRoom(int room_id){
+	public void enterRoom(int room_id,String user_id){//引数にuser_idを追加
+		aController.enterRoom(room_id,user_id);
 	}
 
-	public void checkRoomState(){
+	public boolean checkRoomState(int room_id){
+		return aController.checkRoomState(room_id);
 	}
 
-	public void checkConnection(){
+	public boolean checkConnection(){
+		return true;
 	}
 
 	public void logout(String user_id){
