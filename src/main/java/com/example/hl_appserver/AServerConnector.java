@@ -50,11 +50,24 @@ public class AServerConnector{
 			sendMessage(session, message5000);
 		}else if(receivedMessage.order.equals("1001")){
 			Message message5001 = new Message("5001", receivedMessage.messageContent.user_id);
-			message5001.messageContent.textDataList.add(getRule());
+			message5001.messageContent.image_data = getRule();
 			sendMessage(session, message5001);
 		}else if(receivedMessage.order.equals("1999")){
 			user_map.put(session, receivedMessage.messageContent.user_id);
 			reverse_user_map.put(receivedMessage.messageContent.user_id, session);
+			//1004 画面遷移メッセージを受信
+		}else if(receivedMessage.order.equals("1004")){
+			if(receivedMessage.result){
+				aController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
+			}
+		}else if(receivedMessage.order.equals("1005")){
+			if(receivedMessage.result){
+				aController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
+			}
+		}else if(receivedMessage.order.equals("1006")){
+			if(receivedMessage.result){
+				aController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
+			}
 		}
 	}
 
@@ -125,7 +138,10 @@ public class AServerConnector{
 		return scoreList;
 	}
 
-	public void getCardList(){
+	public List<String> getCardList(){
+		List<String> card_list = new ArrayList<>();
+		card_list = databaseConnector.getCardList();
+		return card_list;
 	}
 
 	public void getErrorInfo(){

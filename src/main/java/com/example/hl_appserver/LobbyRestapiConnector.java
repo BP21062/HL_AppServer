@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 
 @Path("/")
 public class LobbyRestapiConnector{
-
 	public AController aController;
 	static Gson gson = new Gson();
 
@@ -27,7 +26,8 @@ public class LobbyRestapiConnector{
 	 * trueの場合には、AServerConnectorにuser_idを記憶する。
 	 * @param request 受け取ったJson(room_idとuser_idが埋まっているもの)
 	 * @return 真理値　部屋に入れるならtrue 入れなければfalse
-	 */ public Response checkRoomState(String request){
+	 */
+	public Response checkRoomState(String request){
 		//メッセージを解凍
 		Message request_message = gson.fromJson(request, Message.class);
 		//checkRoomStateがtrueならuser_idを記憶
@@ -50,4 +50,5 @@ public class LobbyRestapiConnector{
 		return Response.ok().entity(gson.toJson(aController.checkRoomCount())).build();
 
 	}
+
 }

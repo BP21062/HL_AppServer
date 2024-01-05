@@ -8,7 +8,9 @@ public class Card{
 	public List<Integer> card_number = new ArrayList<>();
 	public List<String> image = new ArrayList<>();
 
-	public void saveCard(){
+	public void saveCard(String card_base64,int num){
+		image.add(card_base64);
+		card_number.add(num);
 
 	}
 

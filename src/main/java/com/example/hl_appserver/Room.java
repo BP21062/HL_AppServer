@@ -8,6 +8,7 @@ public class Room{
 	int room_id;
 	int user_count;
 	List<String> user_list = new ArrayList<>();
+	List<Integer> score_list = new ArrayList<>();
 
 
 	public Room(int room_id){
@@ -18,6 +19,7 @@ public class Room{
 	public String increaseUserCount(String user_id){
 		user_count += 1;
 		user_list.add(user_id);
+		score_list.add(0);
 		if(user_count<4){
 			//waitMatch();
 			return "checkConnection";
