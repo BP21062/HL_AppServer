@@ -25,10 +25,12 @@ public class DatabaseConnector{
 	}
 
 	public List<Integer> getScore(String user_id){
-		List<Integer> scoreDataList = null; try{
+		List<Integer> scoreDataList = null;
+		try{
 
 			// 接続先はこんな感じの文字列->jdbc:mysql://sql.yamazaki.se.shibaura-it.ac.jp:13307/データベース名
-			String target = url + ":" + sqlServerPort + "/" + sqlDatabaseName; System.out.println("target: " + target);
+			String target = url + ":" + sqlServerPort + "/" + sqlDatabaseName;
+			System.out.println("target: " + target);
 
 			// 接続先情報と"MySQLへログインするための"ユーザIDとパスワードから接続を行う
 			Connection connection = DriverManager.getConnection(target, sqlUserId, sqlPassword);
@@ -42,16 +44,20 @@ public class DatabaseConnector{
 			ResultSet rs = stmt.executeQuery(queryString);
 
 			// 得られた結果の集合から必要なデータを取り出す
-			List<String> textDataList = new ArrayList<>(); scoreDataList = new ArrayList<>();
+			List<String> textDataList = new ArrayList<>();
+			scoreDataList = new ArrayList<>();
 			// 0→plays 1→hits 2→wins
 
 
 			while(rs.next()){
-				System.out.println(rs.getString(1)); scoreDataList.add(Integer.parseInt(rs.getString(2)));
+				System.out.println(rs.getString(1));
+				scoreDataList.add(Integer.parseInt(rs.getString(2)));
 				scoreDataList.add(Integer.parseInt(rs.getString(3)));
 				scoreDataList.add(Integer.parseInt(rs.getString(4)));
 				//textDataList.add(rs.getString(1));
-			} System.out.println("List Elements:"); for(int element : scoreDataList){
+			}
+			System.out.println("List Elements:");
+			for(int element : scoreDataList){
 				System.out.println(element);
 			}
 
@@ -60,14 +66,17 @@ public class DatabaseConnector{
 			e.printStackTrace();
 		}finally{
 
-		} return scoreDataList;
+		}
+		return scoreDataList;
 	}
 
 	public String getRule(){
-		String rule = null; try{
+		String rule = null;
+		try{
 
 			// 接続先はこんな感じの文字列->jdbc:mysql://sql.yamazaki.se.shibaura-it.ac.jp:13307/データベース名
-			String target = url + ":" + sqlServerPort + "/" + sqlDatabaseName; System.out.println("target: " + target);
+			String target = url + ":" + sqlServerPort + "/" + sqlDatabaseName;
+			System.out.println("target: " + target);
 
 			// 接続先情報と"MySQLへログインするための"ユーザIDとパスワードから接続を行う
 			Connection connection = DriverManager.getConnection(target, sqlUserId, sqlPassword);
@@ -84,35 +93,25 @@ public class DatabaseConnector{
 
 
 			while(rs.next()){
-				System.out.println(rs.getString(1)); rule = rs.getString(1);
+				System.out.println(rs.getString(1));
+				rule = rs.getString(1);
 			}
 
 
 		}catch(SQLException e){
 			e.printStackTrace();
-		} return rule;
+		}
+		return rule;
 
 	}
 
-	public void getUserList(){
-
-	}
-
-	public void saveScore(){
-	}
-
-	/**
-	 * getCardListメソッド
-	 * 現在は５２枚分返答しているメソッドになるが、パラメータで選定しても可
-	 * DBからカードのbase64コードを取得し,string配列で返す
-	 *
-	 * @return 52枚のカードのbase64コードが格納されているList
-	 */
-	public List<String> getCardList(){
-		List<String> card_list = new ArrayList<>(); try{
+	public void saveScore(String user_id, int num_hit, boolean num_wins){
+		int win = 0;
+		try{
 
 			// 接続先はこんな感じの文字列->jdbc:mysql://sql.yamazaki.se.shibaura-it.ac.jp:13307/データベース名
-			String target = url + ":" + sqlServerPort + "/" + sqlDatabaseName; System.out.println("target: " + target);
+			String target = url + ":" + sqlServerPort + "/" + sqlDatabaseName;
+			System.out.println("target: " + target);
 
 			// 接続先情報と"MySQLへログインするための"ユーザIDとパスワードから接続を行う
 			Connection connection = DriverManager.getConnection(target, sqlUserId, sqlPassword);
@@ -120,18 +119,56 @@ public class DatabaseConnector{
 			Statement stmt = connection.createStatement();
 			// 実際にMySQLデータベースサーバに問い合わせるときのクエリメッセージを作る
 			// ここはやりたい処理によって大きく変わることに注意
-			String queryString = "SELECT base64_code FROM CARD;";
+			if(num_wins){
+				win = 1;
+			}
+			String queryString = "UPDATE SCORE SET num_plays = num_plays + 1, num_wins = num_wins + '" + win + "', num_hit = num_hit + '" + num_hit + "' WHERE user_id = '" + user_id + "';";
 
 			// Statementオブジェクトとクエリメッセージを使い，実際に問い合わせて結果を得る
-			ResultSet rs = stmt.executeQuery(queryString);
+			int rs = stmt.executeUpdate(queryString);
 
-			while(rs.next()){
-				card_list.add(rs.getString(1));
-			}
-
+			System.out.println(rs);
 
 		}catch(SQLException e){
 			e.printStackTrace();
-		} return card_list;
+		}
 	}
-}
+
+		/**
+		 * getCardListメソッド
+		 * 現在は５２枚分返答しているメソッドになるが、パラメータで選定しても可
+		 * DBからカードのbase64コードを取得し,string配列で返す
+		 *
+		 * @return 52枚のカードのbase64コードが格納されているList
+		 */
+		public List<String> getCardList () {
+			List<String> card_list = new ArrayList<>();
+			try{
+
+				// 接続先はこんな感じの文字列->jdbc:mysql://sql.yamazaki.se.shibaura-it.ac.jp:13307/データベース名
+				String target = url + ":" + sqlServerPort + "/" + sqlDatabaseName;
+				System.out.println("target: " + target);
+
+				// 接続先情報と"MySQLへログインするための"ユーザIDとパスワードから接続を行う
+				Connection connection = DriverManager.getConnection(target, sqlUserId, sqlPassword);
+				// MySQLに問い合わせるためのStatementオブジェクトを構築する
+				Statement stmt = connection.createStatement();
+				// 実際にMySQLデータベースサーバに問い合わせるときのクエリメッセージを作る
+				// ここはやりたい処理によって大きく変わることに注意
+				String queryString = "SELECT base64_code FROM CARD;";
+
+				// Statementオブジェクトとクエリメッセージを使い，実際に問い合わせて結果を得る
+				ResultSet rs = stmt.executeQuery(queryString);
+
+				while(rs.next()){
+					card_list.add(rs.getString(1));
+				}
+
+
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+			return card_list;
+		}
+	}
+

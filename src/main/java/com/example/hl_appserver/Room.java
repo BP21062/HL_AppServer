@@ -9,6 +9,7 @@ public class Room{
 	int user_count;
 	List<String> user_list = new ArrayList<>();
 	List<Integer> score_list = new ArrayList<>();
+	public List<Integer> hit_list = new ArrayList<>(); //戦績管理用
 
 
 	public Room(int room_id){
@@ -20,6 +21,7 @@ public class Room{
 		user_count += 1;
 		user_list.add(user_id);
 		score_list.add(0);
+		hit_list.add(0);
 		if(user_count<4){
 			//waitMatch();
 			return "checkConnection";
