@@ -6,6 +6,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.ExtendedConfig;
 import org.glassfish.tyrus.server.Server;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,16 @@ public class AController{
 	public void changeResultScreen(int room_id){
 	}
 
-	public void recordResult(int room_id){
+	public void closeSession(String user_id) throws IOException{
+		try{
+			aServerConnector.closeSession(user_id);
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void recordResult(String user_id,int num_hit, boolean num_wins){
+		aServerConnector.recordResult(user_id,num_hit,num_wins);
 	}
 
 	public boolean checkRoomState(int room_id){
@@ -87,8 +97,8 @@ public class AController{
 
 	}
 
-	public void calculateScore(int room_id){
-		select(room_id).calculateScore();
+	public void calculateScore(int room_id,String user_id, String choice, String pattern){
+		select(room_id).calculateScore(user_id, choice, pattern);
 	}
 
 	public GameController select(int room_id){//room_idの判定用、if文重複を避ける為
@@ -108,8 +118,12 @@ public class AController{
 	}
 
 
-	public void checkSuccessMessage(int room_id, String order){
-		select(room_id).checkSuccessMessage(order);
+	public void checkSuccessMessage(int room_id, String order) throws IOException{
+		try{
+			select(room_id).checkSuccessMessage(order);
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void memorizeUser(String user_id){

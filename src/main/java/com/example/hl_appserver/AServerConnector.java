@@ -68,6 +68,12 @@ public class AServerConnector{
 			if(receivedMessage.result){
 				aController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
 			}
+		}else if(receivedMessage.order.equals("1007")){
+			aController.calculateScore(receivedMessage.messageContent.room_id, receivedMessage.messageContent.user_id, receivedMessage.messageContent.choice, receivedMessage.messageContent.pattern);
+		}else if(receivedMessage.order.equals("1008")){
+			if(receivedMessage.result){
+				aController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
+			}
 		}
 	}
 
@@ -123,7 +129,12 @@ public class AServerConnector{
 		return true;
 	}
 
-	public void logout(String user_id){
+	public void closeSession(String user_id) throws IOException{
+		try{
+			reverse_user_map.get(user_id).close();
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
 	}
 
 	public String getRule(){
@@ -142,6 +153,9 @@ public class AServerConnector{
 		List<String> card_list = new ArrayList<>();
 		card_list = databaseConnector.getCardList();
 		return card_list;
+	}
+	public void recordResult(String user_id,int num_hit, boolean num_wins){
+		databaseConnector.saveScore(user_id,num_hit,num_wins);
 	}
 
 	public void getErrorInfo(){
