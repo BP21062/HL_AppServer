@@ -106,4 +106,8 @@ public class GameController{
 
 	}
 
+	public int checkRoomCount(){
+		return room.user_count;
+	}
+
 }

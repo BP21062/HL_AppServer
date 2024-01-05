@@ -9,16 +9,18 @@ import java.util.*;
 
 @ServerEndpoint("/")
 public class AServerConnector{
+	public List<String> memo_user_list = new ArrayList<>();
 	public DatabaseConnector databaseConnector;
 
 
 	public AController aController;
 
 	private static Set<Session> establishedSessions = Collections.synchronizedSet(new HashSet<Session>());
-	public static  Map<Session, String> user_map = new HashMap<>();
-	public static Map<String, Session> reverse_user_map = new HashMap<>();
+	public static Map<Session,String> user_map = new HashMap<>();
+	public static Map<String,Session> reverse_user_map = new HashMap<>();
 
 	static Gson gson = new Gson();
+
 
 	public AServerConnector(AController aController){
 		this.aController = aController;
@@ -92,8 +94,12 @@ public class AServerConnector{
 	public void connect(String server_name){
 	}
 
-	public void enterRoom(int room_id,String user_id){//引数にuser_idを追加
-		aController.enterRoom(room_id,user_id);
+	public void memorizeUser(String user_id){
+		memo_user_list.add(user_id);
+	}
+
+	public void enterRoom(int room_id, String user_id){//引数にuser_idを追加
+		aController.enterRoom(room_id, user_id);
 	}
 
 	public boolean checkRoomState(int room_id){
