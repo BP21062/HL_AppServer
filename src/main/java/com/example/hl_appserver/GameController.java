@@ -31,7 +31,7 @@ public class GameController{
 			choiceDeckAndCardList();
 			//現在のスコアを表示
 			displayCurrentPoint();
-		}else if(game_loop == 6){
+		}else if(game_loop == 6 || room.user_count == 1){
 			try{
 				endGame();
 			}catch(IOException e){
@@ -85,25 +85,25 @@ public class GameController{
 	}
 
 	public void enterRoom(String user_id){//引数をroom_idからuser_idに変更
-		String R;//RoomのincreseUserCountからの返り値を保存
-		Boolean WAIT;//waitMatchの返り値を保存,true(４人集まった) or false
-		R = room.increaseUserCount(user_id);
-		if("checkConnection".equals(R)){//4人未満
-			aController.checkConnection();
-			WAIT = room.waitMatch();
-			while(WAIT == false){//4人未満
-				aController.checkConnection();
-				if(WAIT == true){//部屋に4人集まった
-					break;
-				}
-				WAIT = room.waitMatch();
+		boolean WAIT;//waitMatchの返り値を保存,true(４人集まった) or false
+		room.increaseUserCount(user_id);
+		//sendMessage 人の増減でクライアントに在室人数を通知する
+		WAIT = room.waitMatch();
+		if(WAIT){
+			for(String user : room.user_list){
+				sendMessage(user, "5002");
 			}
-			//sendMessageを呼んでgameを開始
-			//aController.sendMessage();
-		}else if("startGame".equals(R)){
-			//他のブランチでstartGameを実装していそうだったのでマージされたら追加します。
 		}
 	}
+	public void exitRoom(String user_id){
+		room.decreaseUserCount(user_id);
+		room.user_list.remove(user_id);
+		//sendMessage 人の増減でクライアントに在室人数を通知する
+	}
+	public void stopUserGame(String user_id){
+		room.stopUserGame(user_id);
+	}
+
 
 	public boolean checkRoomState(){
 		if(room.user_count == 4){
@@ -117,7 +117,7 @@ public class GameController{
 	public void checkSuccessMessage(String order) throws IOException{
 		if(order.equals("1004")){
 			check_success_message++;
-			if(check_success_message == 4){
+			if(check_success_message == room.user_count){
 				check_success_message = 0;
 				try{
 					startGame();
@@ -128,7 +128,7 @@ public class GameController{
 			}
 		}else if(order.equals("1005")){
 			check_success_message++;
-			if(check_success_message == 4){
+			if(check_success_message == room.user_count){
 				check_success_message = 0;
 				//１枚目を表示するメッセージを送信
 				displayFirstCard();
@@ -137,7 +137,7 @@ public class GameController{
 			}
 		}else if(order.equals("1006")){
 			check_success_message++;
-			if(check_success_message == 4){
+			if(check_success_message == room.user_count){
 				check_success_message = 0;
 				//タイマーをスタート
 				startTimer();
@@ -145,7 +145,7 @@ public class GameController{
 			}
 		}else if(order.equals("1008")){
 			check_success_message++;
-			if(check_success_message == 4){
+			if(check_success_message == room.user_count){
 				check_success_message = 0;
 				//ゲームをループ
 				startGame();
@@ -347,6 +347,8 @@ public class GameController{
 		}else if(order.equals("5006")){
 			message.messageContent.room_id = room.room_id;
 			message.messageContent.score_list = room.score_list;
+		}else if(order.equals("5002")){
+			message.messageContent.room_id = room.room_id;
 		}
 
 			aController.sendMessage(message, user_id);

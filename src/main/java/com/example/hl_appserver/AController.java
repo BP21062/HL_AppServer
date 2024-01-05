@@ -3,7 +3,6 @@ package com.example.hl_appserver;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.ExtendedConfig;
 import org.glassfish.tyrus.server.Server;
 
 import java.io.IOException;
@@ -27,22 +26,13 @@ public class AController{
 
 	public static final String restUri = "http://localhost:8081";
 
-	public void displayCurrentPoint(Message message, String user_id){
 
-	}
 
 	public List<String> choiceDeckAndCardList(){
 		return aServerConnector.getCardList();
 	}
 
-	public void displayChoice(int room_id){
-	}
 
-	public void displaySecondCard(int room_id){
-	}
-
-	public void changeResultScreen(int room_id){
-	}
 
 	public void closeSession(String user_id) throws IOException{
 		try{
@@ -58,44 +48,30 @@ public class AController{
 
 	public boolean checkRoomState(int room_id){
 		return select(room_id).checkRoomState();
-
-		/*
-		if(room_id == 1){
-			return game1.checkRoomState();
-		}
-		else if(room_id == 2){
-			return game2.checkRoomState();
-		}
-		else if(room_id == 3){
-			return game3.checkRoomState();
-		}
-		else if(room_id == 4){
-			return game4.checkRoomState();
-		}
-		else if(room_id == 5){
-			return game5.checkRoomState();
-		}
-		else {
-			return game6.checkRoomState();
-		}
-
-		 */
 	}
 
 	public void enterRoom(int room_id, String user_id){//引数にuser_idを追加
 		select(room_id).enterRoom(user_id);
 
 	}
-
-	public boolean checkConnection(){
-		aServerConnector.checkConnection();
-		return true;
+	public void stopUserGame(String user_id){
+		if(game1.room.user_list.contains(user_id)){
+			game1.stopUserGame(user_id);
+		}else if(game2.room.user_list.contains(user_id)){
+			game2.stopUserGame(user_id);
+		}else if(game3.room.user_list.contains(user_id)){
+			game3.stopUserGame(user_id);
+		}else if(game4.room.user_list.contains(user_id)){
+			game4.stopUserGame(user_id);
+		}else if(game5.room.user_list.contains(user_id)){
+			game5.stopUserGame(user_id);
+		}else if(game6.room.user_list.contains(user_id)){
+			game6.stopUserGame(user_id);
+		}
 	}
 
-	public void startTimer(int room_id){
-		select(room_id).startTimer();
 
-	}
+
 
 	public void calculateScore(int room_id,String user_id, String choice, String pattern){
 		select(room_id).calculateScore(user_id, choice, pattern);
