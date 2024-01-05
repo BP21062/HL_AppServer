@@ -3,6 +3,7 @@ package com.example.hl_appserver;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.ExtendedConfig;
 import org.glassfish.tyrus.server.Server;
 
 import java.net.URI;
@@ -25,10 +26,12 @@ public class AController{
 
 	public static final String restUri = "http://localhost:8081";
 
-	public void displayCurrentPoint(int room_id){
+	public void displayCurrentPoint(Message message, String user_id){
+
 	}
 
-	public void choiceDeckAndCardList(int room_id){
+	public List<String> choiceDeckAndCardList(){
+		return aServerConnector.getCardList();
 	}
 
 	public void displayChoice(int room_id){
@@ -105,7 +108,8 @@ public class AController{
 	}
 
 
-	public void checkSuccessMessage(int room_id){
+	public void checkSuccessMessage(int room_id, String order){
+		select(room_id).checkSuccessMessage(order);
 	}
 
 	public void memorizeUser(String user_id){
