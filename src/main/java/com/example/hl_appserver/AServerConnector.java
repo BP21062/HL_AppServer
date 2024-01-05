@@ -53,8 +53,11 @@ public class AServerConnector{
 			message5001.messageContent.image_data = getRule();
 			sendMessage(session, message5001);
 		}else if(receivedMessage.order.equals("1999")){
-			user_map.put(session, receivedMessage.messageContent.user_id);
-			reverse_user_map.put(receivedMessage.messageContent.user_id, session);
+			if(memo_user_list.contains(receivedMessage.messageContent.user_id)){
+				memo_user_list.remove(receivedMessage.messageContent.user_id);
+				user_map.put(session, receivedMessage.messageContent.user_id);
+				reverse_user_map.put(receivedMessage.messageContent.user_id, session);
+			}else session.close();
 			//1004 画面遷移メッセージを受信
 		}else if(receivedMessage.order.equals("1004")){
 			if(receivedMessage.result){
@@ -74,6 +77,8 @@ public class AServerConnector{
 			if(receivedMessage.result){
 				aController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
 			}
+		}else if(receivedMessage.order.equals("1003")){
+			aController.enterRoom(receivedMessage.messageContent.room_id, receivedMessage.messageContent.user_id);
 		}
 	}
 
@@ -90,7 +95,7 @@ public class AServerConnector{
 		System.out.println("[WebSocketServerExample] onError:" + session.getId());
 		try{
 			session.close();
-			//user_stop_game
+			aController.stopUserGame(user_map.get(session));
 
 		}catch(IOException e){
 			e.printStackTrace();
@@ -125,9 +130,7 @@ public class AServerConnector{
 		return aController.checkRoomState(room_id);
 	}
 
-	public boolean checkConnection(){
-		return true;
-	}
+
 
 	public void closeSession(String user_id) throws IOException{
 		try{

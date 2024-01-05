@@ -17,22 +17,18 @@ public class Room{
 		user_count = 0;
 	}
 
-	public String increaseUserCount(String user_id){
+	public void increaseUserCount(String user_id){
 		user_count += 1;
 		user_list.add(user_id);
 		score_list.add(0);
 		hit_list.add(0);
-		if(user_count<4){
-			//waitMatch();
-			return "checkConnection";
-		}else{
-			return "startGame";
-		}
 	}
 
 
 	public void decreaseUserCount(String user_id){
 		user_count -= 1;
+		score_list.remove(user_list.indexOf(user_id));
+		hit_list.remove(user_list.indexOf(user_id));
 		user_list.remove(user_id);
 	}
 
@@ -43,9 +39,6 @@ public class Room{
 		}else{
 			return false;
 		}
-
-
-		//sendMessage(クライアントの画面遷移を呼び出す)
 	}
 
 
