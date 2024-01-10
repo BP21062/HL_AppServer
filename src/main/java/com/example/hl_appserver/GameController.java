@@ -63,12 +63,12 @@ public class GameController{
 		}
 		//戦績の保存
 		for (int i = 0; i < room.user_list.size(); i++) {
-			//aController.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
+			aControllerContents.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
 		}
 
 		//全員のsessionをクローズ
 		for(String user : room.user_list){
-			//aController.closeSession(user);
+			aControllerContents.closeSession(user);
 		}
 
 
@@ -272,7 +272,7 @@ public class GameController{
 	public void choiceDeckAndCardList(){
 		//５２枚ぶっこみ用
 		List<String> all_card_list ;
-		//all_card_list = aController.choiceDeckAndCardList();
+		all_card_list = aControllerContents.choiceDeckAndCardList();
 		//0-51までを配列に突っ込む
 		List<Integer> numbers = new ArrayList<>();
 		for(int i = 0; i <= 51; i++){
@@ -301,12 +301,12 @@ public class GameController{
 
 		//1枚目を保存
 		for(Integer num : selected5_from_remaining){
-			//card1.saveCard(all_card_list.get(num), num + 1);
+			card1.saveCard(all_card_list.get(num), num + 1);
 		}
 
 		//２枚目を保存
 		for(Integer num : selected_5_from_20){
-			//card2.saveCard(all_card_list.get(num), num + 1);
+			card2.saveCard(all_card_list.get(num), num + 1);
 		}
 
 		pattern_list.set(0, 0);//spade
