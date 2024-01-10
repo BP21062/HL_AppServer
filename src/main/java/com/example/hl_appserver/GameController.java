@@ -18,9 +18,22 @@ public class GameController{
 
 	public AController aController;
 
-	public GameController(int room_id, AController aController){
-		this.aController = aController;
-		this.room = new Room(room_id);
+	public GameController(int room_id){
+		GameControllerContent gameControllerContent = new GameControllerContent();
+		gameControllerContent.generateRoom(room_id);
+		if(room_id == 1){
+			this.room = GameControllerContent.room1;
+		}else if(room_id == 2){
+			this.room = GameControllerContent.room2;
+		}else if(room_id == 3){
+			this.room = GameControllerContent.room3;
+		}else if(room_id == 4){
+			this.room = GameControllerContent.room4;
+		}else if(room_id == 5){
+			this.room = GameControllerContent.room5;
+		}else if(room_id == 6){
+			this.room = GameControllerContent.room6;
+		}
 	}
 
 	public void startGame() throws IOException{
@@ -50,12 +63,12 @@ public class GameController{
 		}
 		//戦績の保存
 		for (int i = 0; i < room.user_list.size(); i++) {
-			aController.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
+			//aController.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
 		}
 
 		//全員のsessionをクローズ
 		for(String user : room.user_list){
-			aController.closeSession(user);
+			//aController.closeSession(user);
 		}
 
 
@@ -259,7 +272,7 @@ public class GameController{
 	public void choiceDeckAndCardList(){
 		//５２枚ぶっこみ用
 		List<String> all_card_list ;
-		all_card_list = aController.choiceDeckAndCardList();
+		//all_card_list = aController.choiceDeckAndCardList();
 		//0-51までを配列に突っ込む
 		List<Integer> numbers = new ArrayList<>();
 		for(int i = 0; i <= 51; i++){
@@ -288,12 +301,12 @@ public class GameController{
 
 		//1枚目を保存
 		for(Integer num : selected5_from_remaining){
-			card1.saveCard(all_card_list.get(num), num + 1);
+			//card1.saveCard(all_card_list.get(num), num + 1);
 		}
 
 		//２枚目を保存
 		for(Integer num : selected_5_from_20){
-			card2.saveCard(all_card_list.get(num), num + 1);
+			//card2.saveCard(all_card_list.get(num), num + 1);
 		}
 
 		pattern_list.set(0, 0);//spade
@@ -351,7 +364,7 @@ public class GameController{
 			message.messageContent.room_id = room.room_id;
 		}
 
-			aController.sendMessage(message, user_id);
+			//aController.sendMessage(message, user_id);
 
 
 	}
