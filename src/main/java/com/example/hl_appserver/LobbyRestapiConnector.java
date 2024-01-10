@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 @Path("/")
 public class LobbyRestapiConnector{
+	/*
 	public AController aController;
 	static Gson gson = new Gson();
 
@@ -27,6 +28,7 @@ public class LobbyRestapiConnector{
 	 * @param request 受け取ったJson(room_idとuser_idが埋まっているもの)
 	 * @return 真理値　部屋に入れるならtrue 入れなければfalse
 	 */
+	/*
 	public Response checkRoomState(String request){
 		//メッセージを解凍
 		Message request_message = gson.fromJson(request, Message.class);
@@ -45,10 +47,11 @@ public class LobbyRestapiConnector{
 	 * checkRoomCountメソッド
 	 * ルームの在室人数をJsonで返す MessageContentクラスのroom_user_countに部屋１～６の順で返す
 	 * @return List<Integer> 部屋部屋１～６の人数
-	 */ public Response checkRoomCount(){
+	 */ /*public Response checkRoomCount(){
 		//よくよく考えればListだけ返せばよくね...？ part.2
 		return Response.ok().entity(gson.toJson(aController.checkRoomCount())).build();
 
 	}
+	*/
 
 }
