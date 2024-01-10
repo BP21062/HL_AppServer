@@ -15,6 +15,7 @@ public class GameControllerContent{
 	public static Room room5;
 	public static Room room6;
 	public static AControllerContents aControllerContents;
+	public static AServerConnector aServerConnector;
 
 	public void generateGC(int room_id){
 		GameController gameController = new GameController(room_id);
@@ -48,6 +49,11 @@ public class GameControllerContent{
 		}else if(room_id == 6){
 			room6 = room;
 		}
+	}
+
+	public void generateASC(){
+		AServerConnector aServerConnector = new AServerConnector();
+		this.aServerConnector = aServerConnector;
 	}
 
 }

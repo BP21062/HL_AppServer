@@ -13,6 +13,7 @@ public class AControllerContents{
 	public GameController game4 = GameControllerContent.game4;
 	public GameController game5 = GameControllerContent.game5;
 	public GameController game6 = GameControllerContent.game6;
+	public AServerConnector aServerConnector = GameControllerContent.aServerConnector;
 
 	public boolean checkRoomState(int room_id){
 		return select(room_id).checkRoomState();
@@ -159,4 +160,15 @@ public class AControllerContents{
 		return user_count;
 	}
 
+	public void sendMessage(Message message, String user_id){
+
+		if(Objects.isNull(aServerConnector)){
+			GameControllerContent gameControllerContent = new GameControllerContent();
+			gameControllerContent.generateASC();
+			this.aServerConnector = GameControllerContent.aServerConnector;
+		}
+
+		aServerConnector.sendMessage(AServerConnector.reverse_user_map.get(user_id),message);
+
+	}
 }
