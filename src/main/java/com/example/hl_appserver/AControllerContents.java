@@ -171,4 +171,23 @@ public class AControllerContents{
 		aServerConnector.sendMessage(AServerConnector.reverse_user_map.get(user_id),message);
 
 	}
+
+	public void recordResult(String user_id, int hits, boolean win){
+		aServerConnector.recordResult(user_id,hits,win);
+	}
+
+	public void closeSession(String user_id){
+		try{
+			aServerConnector.closeSession(user_id);
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		}
+	}
+
+	public List<String> choiceDeckAndCardList(){
+		return aServerConnector.getCardList();
+	}
+	public void memorizeUser(String user_id){
+		aServerConnector.memorizeUser(user_id);
+	}
 }

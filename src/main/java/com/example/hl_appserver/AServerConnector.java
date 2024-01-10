@@ -75,6 +75,7 @@ public class AServerConnector{
 				aControllerContents.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
 			}
 		}else if(receivedMessage.order.equals("1003")){
+			//enterRoom
 			user_map.put(session,receivedMessage.messageContent.user_id);
 			reverse_user_map.put(receivedMessage.messageContent.user_id,session);
 			aControllerContents.enterRoom(receivedMessage.messageContent.room_id, receivedMessage.messageContent.user_id);
