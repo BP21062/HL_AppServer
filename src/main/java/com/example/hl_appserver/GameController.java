@@ -16,7 +16,7 @@ public class GameController{
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
 
-	public AController aController;
+	public AControllerContents aControllerContents;
 
 	public GameController(int room_id){
 		GameControllerContent gameControllerContent = new GameControllerContent();
@@ -364,7 +364,7 @@ public class GameController{
 			message.messageContent.room_id = room.room_id;
 		}
 
-			//aController.sendMessage(message, user_id);
+			aControllerContents.sendMessage(message, user_id);
 
 
 	}
