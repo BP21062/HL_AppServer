@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Room{
 	int room_id;
-	int user_count;
-	List<String> user_list = new ArrayList<>();
-	List<Integer> score_list = new ArrayList<>();
+	public int user_count;
+	public List<String> user_list = new ArrayList<>();
+	public List<Integer> score_list = new ArrayList<>();
 	public List<Integer> hit_list = new ArrayList<>(); //戦績管理用
 
 

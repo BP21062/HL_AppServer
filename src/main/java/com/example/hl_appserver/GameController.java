@@ -12,7 +12,7 @@ public class GameController{
 	public Card card2; //２枚目のカードを５枚保存する
 	int check_success_message = 0; //クライアントの遷移確認用
 
-	int game_loop = 0; //ループ回数の保存用
+	public int game_loop = 0; //ループ回数の保存用
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
 
@@ -56,13 +56,14 @@ public class GameController{
 		}
 
 	}
+
 	public void endGame() throws IOException{
 		//最終スコアの送信
 		for(String user : room.user_list){
 			sendMessage(user, "5006");
 		}
 		//戦績の保存
-		for (int i = 0; i < room.user_list.size(); i++) {
+		for(int i = 0; i < room.user_list.size(); i++){
 			aControllerContents.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
 		}
 
@@ -78,11 +79,13 @@ public class GameController{
 		this.card1 = new Card(); // card1のインスタンスを初期化
 		this.card2 = new Card(); // card2のインスタンスを初期化
 	}
+
 	public boolean checkWinner(int player){
 		int maxIndex = room.score_list.indexOf(room.score_list.stream().max(Integer::compareTo).get());
 		if(maxIndex == player){
 			return true;
-		}else return false;
+		}else
+			return false;
 	}
 
 	public void displayCurrentPoint(){
@@ -108,11 +111,13 @@ public class GameController{
 			}
 		}
 	}
+
 	public void exitRoom(String user_id){
 		room.decreaseUserCount(user_id);
 		room.user_list.remove(user_id);
 		//sendMessage 人の増減でクライアントに在室人数を通知する
 	}
+
 	public void stopUserGame(String user_id){
 		room.stopUserGame(user_id);
 	}
@@ -188,6 +193,11 @@ public class GameController{
 
 
 	}
+	public int setCardNumber(int num){
+		if(num % 13 == 0){
+			return 13;
+		}else return (num % 13);
+	}
 
 	public void calculateScore(String user_id, String choice, String pattern){
 
@@ -195,8 +205,8 @@ public class GameController{
 		int card_1;
 		int card_2;
 		String card_pattern;//正解の絵柄
-		card_1 = card1.card_number.get(game_loop - 1) % 13;
-		card_2 = card2.card_number.get(game_loop - 1) % 13;
+		card_1 = setCardNumber(card1.card_number.get(game_loop - 1));
+		card_2 = setCardNumber(card2.card_number.get(game_loop - 1));
 
 		//絵柄判定用
 		if(checkCardPattern(card2.card_number.get(game_loop - 1)) == 0){
@@ -271,7 +281,7 @@ public class GameController{
 
 	public void choiceDeckAndCardList(){
 		//５２枚ぶっこみ用
-		List<String> all_card_list ;
+		List<String> all_card_list;
 		all_card_list = aControllerContents.choiceDeckAndCardList();
 		//0-51までを配列に突っ込む
 		List<Integer> numbers = new ArrayList<>();
@@ -339,7 +349,10 @@ public class GameController{
 	}
 
 	public int checkCardPattern(int num){
-		return (int) (num / 13);
+		if(num % 13 == 0){
+			return (int) (num / 13) - 1;
+		}else
+			return (int) (num / 13);
 	}
 
 
@@ -364,7 +377,7 @@ public class GameController{
 			message.messageContent.room_id = room.room_id;
 		}
 
-			aControllerContents.sendMessage(message, user_id);
+		aControllerContents.sendMessage(message, user_id);
 
 
 	}

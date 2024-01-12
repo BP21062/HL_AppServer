@@ -29,7 +29,7 @@ public class AControllerContents{
 			game1.enterRoom(user_id);
 			System.out.println(game1.room.user_count);
 			System.out.println(game1);
-			prepareStartGame(game1.room.user_count);
+			prepareStartGame(game1);
 		}else if(room_id == 2){
 			if(Objects.isNull(game2)){
 				GameControllerContent gameControllerContent = new GameControllerContent();
@@ -39,6 +39,7 @@ public class AControllerContents{
 			game2.enterRoom(user_id);
 			System.out.println(game2.room.user_count);
 			System.out.println(game2);
+			prepareStartGame(game2);
 		}else if(room_id == 3){
 			if(Objects.isNull(game3)){
 				GameControllerContent gameControllerContent = new GameControllerContent();
@@ -48,6 +49,7 @@ public class AControllerContents{
 			game3.enterRoom(user_id);
 			System.out.println(game3.room.user_count);
 			System.out.println(game3);
+			prepareStartGame(game3);
 		}else if(room_id == 4){
 			if(Objects.isNull(game4)){
 				GameControllerContent gameControllerContent = new GameControllerContent();
@@ -57,6 +59,7 @@ public class AControllerContents{
 			game4.enterRoom(user_id);
 			System.out.println(game4.room.user_count);
 			System.out.println(game4);
+			prepareStartGame(game4);
 		}else if(room_id == 5){
 			if(Objects.isNull(game5)){
 				GameControllerContent gameControllerContent = new GameControllerContent();
@@ -66,6 +69,7 @@ public class AControllerContents{
 			game5.enterRoom(user_id);
 			System.out.println(game5.room.user_count);
 			System.out.println(game5);
+			prepareStartGame(game5);
 		}else if(room_id == 6){
 			if(Objects.isNull(game6)){
 				GameControllerContent gameControllerContent = new GameControllerContent();
@@ -75,6 +79,7 @@ public class AControllerContents{
 			game6.enterRoom(user_id);
 			System.out.println(game6.room.user_count);
 			System.out.println(game6);
+			prepareStartGame(game6);
 		}else{
 			//エラー処理
 			System.out.println("Unko");
@@ -82,13 +87,14 @@ public class AControllerContents{
 	}
 
 	//開始画面画面切り替えのためのsendMessageメソッド
-	public void prepareStartGame(int member){
-		if(member == 4){
+	//回収予定
+	public void prepareStartGame(GameController game){
+		if(game.room.user_count == 4){
 			AServerConnector aServerConnector = new AServerConnector();
 			for(int i=0;i<4;i++){
-				System.out.println(AServerConnector.reverse_user_map.get(GameControllerContent.game1.room.user_list.get(i)));
-				Message message = new Message("5002",GameControllerContent.game1.room.user_list.get(i));
-				aServerConnector.sendMessage(AServerConnector.reverse_user_map.get(GameControllerContent.game1.room.user_list.get(i)),message);
+				System.out.println(AServerConnector.reverse_user_map.get(game.room.user_list.get(i)));
+				Message message = new Message("5002",game.room.user_list.get(i));
+				aServerConnector.sendMessage(AServerConnector.reverse_user_map.get(game.room.user_list.get(i)),message);
 			}
 		}
 
