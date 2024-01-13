@@ -15,6 +15,11 @@ public class AControllerContents{
 	public GameController game6 = GameControllerContent.game6;
 	public AServerConnector aServerConnector = GameControllerContent.aServerConnector;
 
+	/**
+	 * checkRoomCountメソッド
+	 * ルームに入れるかどうかを返す
+	 * @return room_id
+	 */
 	public boolean checkRoomState(int room_id){
 		return select(room_id).checkRoomState();
 	}

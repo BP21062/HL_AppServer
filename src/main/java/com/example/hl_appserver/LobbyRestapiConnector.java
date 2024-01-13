@@ -15,7 +15,7 @@ public class LobbyRestapiConnector{
 
 
 	@Path("/checkRoomState")
-	@GET
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * checkRoomStateメソッド
@@ -37,7 +37,7 @@ public class LobbyRestapiConnector{
 	}
 
 	@Path("/checkRoomCount")
-	@GET
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * checkRoomCountメソッド
