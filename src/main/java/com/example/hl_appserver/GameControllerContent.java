@@ -52,8 +52,8 @@ public class GameControllerContent{
 	}
 
 	public void generateASC(){
-		AServerConnector aServerConnector = new AServerConnector();
-		this.aServerConnector = aServerConnector;
+		AServerConnector aServerConnector_ = new AServerConnector();
+		aServerConnector = aServerConnector_;
 	}
 
 }
