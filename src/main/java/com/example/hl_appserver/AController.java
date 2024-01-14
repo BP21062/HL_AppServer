@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static java.lang.Thread.sleep;
-
 public class AController{
 
 	static GameController game1;
@@ -62,40 +60,27 @@ public class AController{
 	public static void enterRoom(int room_id, String user_id){//引数にuser_idを追加
 		if(room_id == 1){
 			game1.enterRoom(user_id);
-			System.out.println(game1.room.user_count);
-			for(String user : game1.room.user_list){
-				System.out.println(user);
-			}
 			prepareStartGame(game1);
 		}else if(room_id == 2){
 			game2.enterRoom(user_id);
-			System.out.println(game2.room.user_count);
-			System.out.println(game2);
 			prepareStartGame(game2);
 		}else if(room_id == 3){
 			game3.enterRoom(user_id);
-			System.out.println(game3.room.user_count);
-			System.out.println(game3);
 			prepareStartGame(game3);
 		}else if(room_id == 4){
 			game4.enterRoom(user_id);
-			System.out.println(game4.room.user_count);
-			System.out.println(game4);
 			prepareStartGame(game4);
 		}else if(room_id == 5){
 			game5.enterRoom(user_id);
-			System.out.println(game5.room.user_count);
-			System.out.println(game5);
 			prepareStartGame(game5);
 		}else if(room_id == 6){
 			game6.enterRoom(user_id);
-			System.out.println(game6.room.user_count);
-			System.out.println(game6);
 			prepareStartGame(game6);
 		}else{
 			//エラー処理
 			System.out.println("Error");
 		}
+		System.out.println("[App] enterRoom:" + user_id);
 	}
 
 	//開始画面画面切り替えのためのsendMessageメソッド
@@ -108,7 +93,7 @@ public class AController{
 				throw new RuntimeException(e);
 			}
 			for(int i=0;i<4;i++){
-				System.out.println(AServerConnector.reverse_user_map.get(game.room.user_list.get(i)));
+				System.out.println("[App] prepareStartGame: " +AServerConnector.reverse_user_map.get(game.room.user_list.get(i)).toString());
 				Message message = new Message("5002",game.room.user_list.get(i));
 				AServerConnector.sendMessage(AServerConnector.reverse_user_map.get(game.room.user_list.get(i)),message);
 			}

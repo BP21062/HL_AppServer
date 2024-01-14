@@ -4,11 +4,6 @@ import com.google.gson.Gson;
 
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 
 import java.io.IOException;
 import java.util.*;
@@ -84,8 +79,8 @@ public class AServerConnector{
 
 	@OnError
 	public void onError(Session session, Throwable error){
-		System.out.println("[WebSocketServerExample] onError:" + session.getId());
-		System.out.println("[WebSocketServerExample] Cause by" + error.getMessage());
+		System.out.println("[App] onError:" + session.getId());
+		System.out.println("[App] Cause by" + error.getMessage());
 		try{
 			AController.stopUserGame(user_map.get(session));
 			session.close();
@@ -95,23 +90,6 @@ public class AServerConnector{
 		}
 
 	}
-
-	/**
-	 * checkRoomStateメソッド
-	 * <p>
-	 * ルームに入れるかどうかをJsonで返す
-	 * trueの場合には、AServerConnectorにuser_idを記憶する。
-	 * 
-	 * @param request 受け取ったJson(room_idとuser_idが埋まっているもの)
-	 * @return 真理値 部屋に入れるならtrue 入れなければfalse
-	 */
-	@Path("/checkRoomState")
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response checkRoomState(String request) {
-		try {
-			// メッセージを解凍
-			Message request_message = gson.fromJson(request, Message.class);
 
 	public static void sendMessage(Session session, Message message){
 		String send_message = gson.toJson(message);
