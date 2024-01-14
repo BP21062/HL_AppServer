@@ -15,24 +15,19 @@ public class GameController{
 	public int game_loop = 0; //ループ回数の保存用
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
-
-	public AControllerContents aControllerContents;
-
 	public GameController(int room_id){
-		GameControllerContent gameControllerContent = new GameControllerContent();
-		gameControllerContent.generateRoom(room_id);
 		if(room_id == 1){
-			this.room = GameControllerContent.room1;
+			this.room = new Room(1);
 		}else if(room_id == 2){
-			this.room = GameControllerContent.room2;
+			this.room = new Room(2);
 		}else if(room_id == 3){
-			this.room = GameControllerContent.room3;
+			this.room = new Room(3);
 		}else if(room_id == 4){
-			this.room = GameControllerContent.room4;
+			this.room = new Room(4);
 		}else if(room_id == 5){
-			this.room = GameControllerContent.room5;
+			this.room = new Room(5);
 		}else if(room_id == 6){
-			this.room = GameControllerContent.room6;
+			this.room = new Room(6);
 		}
 	}
 
@@ -64,12 +59,12 @@ public class GameController{
 		}
 		//戦績の保存
 		for(int i = 0; i < room.user_list.size(); i++){
-			aControllerContents.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
+			AController.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
 		}
 
 		//全員のsessionをクローズ
 		for(String user : room.user_list){
-			aControllerContents.closeSession(user);
+			AController.closeSession(user);
 		}
 
 
@@ -101,15 +96,7 @@ public class GameController{
 	}
 
 	public void enterRoom(String user_id){//引数をroom_idからuser_idに変更
-		boolean WAIT;//waitMatchの返り値を保存,true(４人集まった) or false
-		room.increaseUserCount(user_id);
-		//sendMessage 人の増減でクライアントに在室人数を通知する
-		WAIT = room.waitMatch();
-		if(WAIT){
-			for(String user : room.user_list){
-				sendMessage(user, "5002");
-			}
-		}
+		this.room.increaseUserCount(user_id);
 	}
 
 	public void exitRoom(String user_id){
@@ -282,7 +269,7 @@ public class GameController{
 	public void choiceDeckAndCardList(){
 		//５２枚ぶっこみ用
 		List<String> all_card_list;
-		all_card_list = aControllerContents.choiceDeckAndCardList();
+		all_card_list = AController.choiceDeckAndCardList();
 		//0-51までを配列に突っ込む
 		List<Integer> numbers = new ArrayList<>();
 		for(int i = 0; i <= 51; i++){
@@ -377,7 +364,7 @@ public class GameController{
 			message.messageContent.room_id = room.room_id;
 		}
 
-		aControllerContents.sendMessage(message, user_id);
+		AController.sendMessage(message, user_id);
 
 
 	}

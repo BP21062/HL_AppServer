@@ -18,10 +18,10 @@ public class Room{
 	}
 
 	public void increaseUserCount(String user_id){
-		user_count += 1;
-		user_list.add(user_id);
-		score_list.add(0);
-		hit_list.add(0);
+		this.user_count += 1;
+		this.user_list.add(user_id);
+		this.score_list.add(0);
+		this.hit_list.add(0);
 	}
 
 
@@ -32,14 +32,6 @@ public class Room{
 		user_list.remove(user_id);
 	}
 
-
-	public boolean waitMatch(){
-		if(user_count==4){
-			return true;
-		}else{
-			return false;
-		}
-	}
 
 
 	public void stopUserGame(String user_id){

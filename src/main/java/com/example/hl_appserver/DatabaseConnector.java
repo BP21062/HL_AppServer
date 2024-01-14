@@ -24,7 +24,7 @@ public class DatabaseConnector{
 		}
 	}
 
-	public List<Integer> getScore(String user_id){
+	public static List<Integer> getScore(String user_id){
 		List<Integer> scoreDataList = null;
 		try{
 
@@ -69,7 +69,7 @@ public class DatabaseConnector{
 		return scoreDataList;
 	}
 
-	public String getRule(){
+	public static String getRule(){
 		String rule = null;
 		try{
 
@@ -104,7 +104,7 @@ public class DatabaseConnector{
 
 	}
 
-	public void saveScore(String user_id, int num_hit, boolean num_wins){
+	public static void saveScore(String user_id, int num_hit, boolean num_wins){
 		int win = 0;
 		try{
 
@@ -140,7 +140,7 @@ public class DatabaseConnector{
 		 *
 		 * @return 52枚のカードのbase64コードが格納されているList
 		 */
-		public List<String> getCardList () {
+		public static List<String> getCardList() {
 			List<String> card_list = new ArrayList<>();
 			try{
 

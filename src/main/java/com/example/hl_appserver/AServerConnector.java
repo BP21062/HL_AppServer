@@ -9,11 +9,7 @@ import java.util.*;
 
 @ServerEndpoint("/playgame")
 public class AServerConnector{
-	public List<String> memo_user_list = new ArrayList<>();
-	public DatabaseConnector databaseConnector;
-
-	public AControllerContents aControllerContents = GameControllerContent.aControllerContents;
-
+	public static List<String> memo_user_list = new ArrayList<>();
 	private static Set<Session> establishedSessions = Collections.synchronizedSet(new HashSet<Session>());
 	public static Map<Session,String> user_map = new HashMap<>();
 	public static Map<String,Session> reverse_user_map = new HashMap<>();
@@ -33,23 +29,8 @@ public class AServerConnector{
 		System.out.println("[WebSocketServerExample] onMessage from (session: " + session.getId() + ") msg: " + message);
 		// 変換：String -> SampleMessage
 		Message receivedMessage = gson.fromJson(message, Message.class);
-		if(Objects.isNull(aControllerContents)){
-			aControllerContents = new AControllerContents();
-		}
 		//通信規則ごとの立ち回りを記述
-		if(receivedMessage.order.equals("1000")){
-			List<Integer> scoreList;
-			Message message5000 = new Message("5000", receivedMessage.messageContent.user_id);
-			scoreList = getScore(receivedMessage.messageContent.user_id);
-			message5000.messageContent.num_plays_score = scoreList.get(0);
-			message5000.messageContent.num_wins_score = scoreList.get(1);
-			message5000.messageContent.num_hits_score = scoreList.get(2);
-			sendMessage(session, message5000);
-		}else if(receivedMessage.order.equals("1001")){
-			Message message5001 = new Message("5001", receivedMessage.messageContent.user_id);
-			message5001.messageContent.image_data = getRule();
-			sendMessage(session, message5001);
-		}else if(receivedMessage.order.equals("1999")){
+		if(receivedMessage.order.equals("1999")){
 			if(memo_user_list.contains(receivedMessage.messageContent.user_id)){
 				memo_user_list.remove(receivedMessage.messageContent.user_id);
 				user_map.put(session, receivedMessage.messageContent.user_id);
@@ -58,27 +39,27 @@ public class AServerConnector{
 			//1004 画面遷移メッセージを受信
 		}else if(receivedMessage.order.equals("1004")){
 			if(receivedMessage.result){
-				aControllerContents.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
+				AController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
 			}
 		}else if(receivedMessage.order.equals("1005")){
 			if(receivedMessage.result){
-				aControllerContents.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
+				AController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
 			}
 		}else if(receivedMessage.order.equals("1006")){
 			if(receivedMessage.result){
-				aControllerContents.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
+				AController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
 			}
 		}else if(receivedMessage.order.equals("1007")){
-			aControllerContents.calculateScore(receivedMessage.messageContent.room_id, receivedMessage.messageContent.user_id, receivedMessage.messageContent.choice, receivedMessage.messageContent.pattern);
+			AController.calculateScore(receivedMessage.messageContent.room_id, receivedMessage.messageContent.user_id, receivedMessage.messageContent.choice, receivedMessage.messageContent.pattern);
 		}else if(receivedMessage.order.equals("1008")){
 			if(receivedMessage.result){
-				aControllerContents.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
+				AController.checkSuccessMessage(receivedMessage.messageContent.room_id, receivedMessage.order);
 			}
 		}else if(receivedMessage.order.equals("1003")){
 			//enterRoom
 			user_map.put(session,receivedMessage.messageContent.user_id);
 			reverse_user_map.put(receivedMessage.messageContent.user_id,session);
-			aControllerContents.enterRoom(receivedMessage.messageContent.room_id, receivedMessage.messageContent.user_id);
+			AController.enterRoom(receivedMessage.messageContent.room_id, receivedMessage.messageContent.user_id);
 		}else if(receivedMessage.order.equals("test")){
 			System.out.println("成功!!!!");
 			Message message77777 = new Message("ok","ok");
@@ -100,7 +81,7 @@ public class AServerConnector{
 		System.out.println("[WebSocketServerExample] onError:" + session.getId());
 		System.out.println("[WebSocketServerExample] Cause by" + error.getMessage());
 		try{
-			aControllerContents.stopUserGame(user_map.get(session));
+			AController.stopUserGame(user_map.get(session));
 			session.close();
 
 
@@ -111,7 +92,7 @@ public class AServerConnector{
 	}
 
 
-	public void sendMessage(Session session, Message message){
+	public static void sendMessage(Session session, Message message){
 		String send_message = gson.toJson(message);
 		try{
 			// 同期送信（sync）
@@ -123,14 +104,14 @@ public class AServerConnector{
 
 
 
-	public void memorizeUser(String user_id){
+	public static void memorizeUser(String user_id){
 		memo_user_list.add(user_id);
 	}
 
 
 
 
-	public void closeSession(String user_id) throws IOException{
+	public static void closeSession(String user_id) throws IOException{
 		try{
 			reverse_user_map.get(user_id).close();
 		}catch(IOException e){
@@ -138,25 +119,13 @@ public class AServerConnector{
 		}
 	}
 
-	public String getRule(){
-		String rule = null;
-		rule = databaseConnector.getRule();
-		return rule;
-	}
-
-	public List<Integer> getScore(String user_id){
-		List<Integer> scoreList;
-		scoreList = databaseConnector.getScore(user_id);
-		return scoreList;
-	}
-
-	public List<String> getCardList(){
+	public static List<String> getCardList(){
 		List<String> card_list;
-		card_list = databaseConnector.getCardList();
+		card_list = DatabaseConnector.getCardList();
 		return card_list;
 	}
-	public void recordResult(String user_id,int num_hit, boolean num_wins){
-		databaseConnector.saveScore(user_id,num_hit,num_wins);
+	public static void recordResult(String user_id, int num_hit, boolean num_wins){
+		DatabaseConnector.saveScore(user_id,num_hit,num_wins);
 	}
 
 }
