@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GameController{
 	public Room room; //紐づいてるルームのインスタンス
-	public Card card1; //一枚目のカードを５枚保存する
+	public Card card1; //１枚目のカードを５枚保存する
 	public Card card2; //２枚目のカードを５枚保存する
 	int check_success_message = 0; //クライアントの遷移確認用
 
@@ -18,25 +18,8 @@ public class GameController{
 
 	public AControllerContents aControllerContents;
 
-	public GameController(int room_id){
-		GameControllerContent gameControllerContent = new GameControllerContent();
-		gameControllerContent.generateRoom(room_id);
-		if(room_id == 1){
-			this.room = GameControllerContent.room1;
-		}else if(room_id == 2){
-			this.room = GameControllerContent.room2;
-		}else if(room_id == 3){
-			this.room = GameControllerContent.room3;
-		}else if(room_id == 4){
-			this.room = GameControllerContent.room4;
-		}else if(room_id == 5){
-			this.room = GameControllerContent.room5;
-		}else if(room_id == 6){
-			this.room = GameControllerContent.room6;
-		}else{
-			System.out.println("[App] GameController: room_idが不正です");
-			// エラー起こすなりなんなり
-		}
+	public GameController(Room room){
+		this.room = room;
 	}
 
 	public void startGame() throws IOException{

@@ -4,15 +4,22 @@ import com.google.gson.Gson;
 
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
 import java.io.IOException;
 import java.util.*;
 
 @ServerEndpoint("/playgame")
+@Path("/")
 public class AServerConnector {
 	public List<String> memo_user_list = new ArrayList<>();
 	public DatabaseConnector databaseConnector;
 
-	public AControllerContents aControllerContents = GameControllerContent.aControllerContents;
+	public AControllerContents aControllerContents = new AControllerContents();;
 
 	private static Set<Session> establishedSessions = Collections.synchronizedSet(new HashSet<Session>());
 	public static Map<Session, String> user_map = new HashMap<>();
@@ -33,9 +40,13 @@ public class AServerConnector {
 		System.out.println("[App] onMessage from (session: " + session.getId() + ") msg: " + message);
 		// 変換：String -> SampleMessage
 		Message receivedMessage = gson.fromJson(message, Message.class);
-		if (Objects.isNull(aControllerContents)) {
-			aControllerContents = new AControllerContents();
-		}
+
+		// 初回アクセス時のみAControllerContentsを生成
+		// if (Objects.isNull(aControllerContents)) {
+		// 	System.out.println("[App] AControllerContents created");
+		// 	aControllerContents = new AControllerContents();
+		// }
+
 		// 通信規則ごとの立ち回りを記述
 		if (receivedMessage.order.equals("1000")) {
 			List<Integer> scoreList;
@@ -112,6 +123,60 @@ public class AServerConnector {
 		}
 
 	}
+
+	/**
+	 * checkRoomStateメソッド
+	 * <p>
+	 * ルームに入れるかどうかをJsonで返す
+	 * trueの場合には、AServerConnectorにuser_idを記憶する。
+	 * 
+	 * @param request 受け取ったJson(room_idとuser_idが埋まっているもの)
+	 * @return 真理値 部屋に入れるならtrue 入れなければfalse
+	 */
+	@Path("/checkRoomState")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response checkRoomState(String request) {
+		try {
+			// メッセージを解凍
+			Message request_message = gson.fromJson(request, Message.class);
+
+			System.out.println("[App] checkRoomState from Lobby: " + request_message.messageContent.room_id);
+
+			// checkRoomStateがtrueならuser_idを記憶
+			Boolean result = aControllerContents.checkRoomState(request_message.messageContent.room_id);
+
+			if (result) {
+				aControllerContents.memorizeUser(request_message.messageContent.user_id);
+			}
+			
+			// よくよく考えればbooleanだけ返せばよくね...？ part.1
+			return Response.ok()
+					.entity(gson.toJson(result))
+					.build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			int status = 400;
+			return Response.status(status).build();
+		}
+
+	}
+
+	@Path("/checkRoomCount")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * checkRoomCountメソッド
+	 * ルームの在室人数をJsonで返す MessageContentクラスのroom_user_countに部屋１～６の順で返す
+	 * 
+	 * @return List<Integer> 部屋部屋１～６の人数
+	 */
+	public Response checkRoomCount() {
+		// よくよく考えればListだけ返せばよくね...？ part.2
+		return Response.ok().entity(gson.toJson(aControllerContents.checkRoomCount())).build();
+
+	}
+
 
 	public void sendMessage(Session session, Message message) {
 		String send_message = gson.toJson(message);

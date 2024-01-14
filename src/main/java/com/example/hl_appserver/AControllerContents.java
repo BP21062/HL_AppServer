@@ -7,13 +7,22 @@ import java.util.Objects;
 
 public class AControllerContents {
 
-	public GameController game1 = GameControllerContent.game1;
-	public GameController game2 = GameControllerContent.game2;
-	public GameController game3 = GameControllerContent.game3;
-	public GameController game4 = GameControllerContent.game4;
-	public GameController game5 = GameControllerContent.game5;
-	public GameController game6 = GameControllerContent.game6;
-	public AServerConnector aServerConnector = GameControllerContent.aServerConnector;
+	GameControllerContent gameControllerContent;
+
+	public GameController game1, game2, game3, game4, game5, game6;
+
+	AControllerContents() {
+		// これはインスタンスにつき1つだけ生成されるはず
+		this.gameControllerContent = new GameControllerContent();
+
+		// 作成されたので代入
+		this.game1 = GameControllerContent.game1;
+		this.game2 = GameControllerContent.game2;
+		this.game3 = GameControllerContent.game3;
+		this.game4 = GameControllerContent.game4;
+		this.game5 = GameControllerContent.game5;
+		this.game6 = GameControllerContent.game6;
+	}
 
 	/**
 	 * checkRoomCountメソッド
@@ -26,62 +35,34 @@ public class AControllerContents {
 	}
 
 	public void enterRoom(int room_id, String user_id) {// 引数にuser_idを追加
+
+		// roomに入出、4人かチェック
 		if (room_id == 1) {
-			if (Objects.isNull(game1)) {
-				GameControllerContent gameControllerContent = new GameControllerContent();
-				gameControllerContent.generateGC(room_id);
-				this.game1 = GameControllerContent.game1;
-			}
 			game1.enterRoom(user_id);
 			System.out.println(game1.room.user_count);
 			System.out.println(game1);
 			prepareStartGame(game1);
 		} else if (room_id == 2) {
-			if (Objects.isNull(game2)) {
-				GameControllerContent gameControllerContent = new GameControllerContent();
-				gameControllerContent.generateGC(room_id);
-				this.game2 = GameControllerContent.game2;
-			}
 			game2.enterRoom(user_id);
 			System.out.println(game2.room.user_count);
 			System.out.println(game2);
 			prepareStartGame(game2);
 		} else if (room_id == 3) {
-			if (Objects.isNull(game3)) {
-				GameControllerContent gameControllerContent = new GameControllerContent();
-				gameControllerContent.generateGC(room_id);
-				this.game3 = GameControllerContent.game3;
-			}
 			game3.enterRoom(user_id);
 			System.out.println(game3.room.user_count);
 			System.out.println(game3);
 			prepareStartGame(game3);
 		} else if (room_id == 4) {
-			if (Objects.isNull(game4)) {
-				GameControllerContent gameControllerContent = new GameControllerContent();
-				gameControllerContent.generateGC(room_id);
-				this.game4 = GameControllerContent.game4;
-			}
 			game4.enterRoom(user_id);
 			System.out.println(game4.room.user_count);
 			System.out.println(game4);
 			prepareStartGame(game4);
 		} else if (room_id == 5) {
-			if (Objects.isNull(game5)) {
-				GameControllerContent gameControllerContent = new GameControllerContent();
-				gameControllerContent.generateGC(room_id);
-				this.game5 = GameControllerContent.game5;
-			}
 			game5.enterRoom(user_id);
 			System.out.println(game5.room.user_count);
 			System.out.println(game5);
 			prepareStartGame(game5);
 		} else if (room_id == 6) {
-			if (Objects.isNull(game6)) {
-				GameControllerContent gameControllerContent = new GameControllerContent();
-				gameControllerContent.generateGC(room_id);
-				this.game6 = GameControllerContent.game6;
-			}
 			game6.enterRoom(user_id);
 			System.out.println(game6.room.user_count);
 			System.out.println(game6);
@@ -141,7 +122,7 @@ public class AControllerContents {
 			return game5;
 		} else if (room_id == 6) {
 			return game6;
-		}else{
+		} else {
 			// エラー処理？
 			System.out.println("[App] select: room_idが不正です");
 			return null;
