@@ -31,6 +31,9 @@ public class GameControllerContent{
 			game5 = gameController;
 		}else if(room_id == 6){
 			game6 = gameController;
+		}else{
+			System.out.println("room_idが不正です");
+			// エラー起こすなりなんなり
 		}
 	}
 
@@ -48,6 +51,9 @@ public class GameControllerContent{
 			room5 = room;
 		}else if(room_id == 6){
 			room6 = room;
+		}else{
+			System.out.println("room_idが不正です");
+			// エラー起こすなりなんなり
 		}
 	}
 

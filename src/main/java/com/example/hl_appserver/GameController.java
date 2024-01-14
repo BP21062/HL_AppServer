@@ -33,6 +33,9 @@ public class GameController{
 			this.room = GameControllerContent.room5;
 		}else if(room_id == 6){
 			this.room = GameControllerContent.room6;
+		}else{
+			System.out.println("[App] GameController: room_idが不正です");
+			// エラー起こすなりなんなり
 		}
 	}
 

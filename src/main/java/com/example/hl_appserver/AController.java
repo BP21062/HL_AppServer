@@ -10,7 +10,7 @@ import java.net.URI;
 
 public class AController{
 	static String contextRoot = "/app";
-	static String protocol = "localhost";
+	static String protocol = "ws";
 	static int port = 8082;
 
 	public static final String restUri = "http://localhost:8081";
@@ -21,7 +21,7 @@ public class AController{
 	 */
 	public static void main(String[] args) throws Exception{
 		Server server = new Server(protocol, port, contextRoot, null, AServerConnector.class);
-		final ResourceConfig rc = new ResourceConfig().packages("");
+		final ResourceConfig rc = new ResourceConfig().packages("com.example.hl_appserver");
 		final HttpServer restServer = GrizzlyHttpServerFactory.createHttpServer(URI.create(restUri), rc);
 
 		try{
