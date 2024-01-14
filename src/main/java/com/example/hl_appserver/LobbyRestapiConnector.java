@@ -9,8 +9,6 @@ import com.google.gson.Gson;
 
 @Path("/")
 public class LobbyRestapiConnector{
-
-	public AControllerContents aControllerContents;
 	static Gson gson = new Gson();
 
 
@@ -29,26 +27,11 @@ public class LobbyRestapiConnector{
 		//メッセージを解凍
 		Message request_message = gson.fromJson(request, Message.class);
 		//checkRoomStateがtrueならuser_idを記憶
-		if(aControllerContents.checkRoomState(request_message.messageContent.room_id)){
-			aControllerContents.memorizeUser(request_message.messageContent.user_id);
+		if(AController.checkRoomState(request_message.messageContent.room_id)){
+			AController.memorizeUser(request_message.messageContent.user_id);
 		}
 		//よくよく考えればbooleanだけ返せばよくね...？ part.1
-		return Response.ok().entity(gson.toJson(aControllerContents.checkRoomState(request_message.messageContent.room_id))).build();
+		return Response.ok().entity(gson.toJson(AController.checkRoomState(request_message.messageContent.room_id))).build();
 	}
-
-	@Path("/checkRoomCount")
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	/**
-	 * checkRoomCountメソッド
-	 * ルームの在室人数をJsonで返す MessageContentクラスのroom_user_countに部屋１～６の順で返す
-	 * @return List<Integer> 部屋部屋１～６の人数
-	 */
-	public Response checkRoomCount(){
-		//よくよく考えればListだけ返せばよくね...？ part.2
-		return Response.ok().entity(gson.toJson(aControllerContents.checkRoomCount())).build();
-
-	}
-
 
 }
