@@ -7,7 +7,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.*;
 
-@ServerEndpoint("/playgame")
+@ServerEndpoint("/app/playgame")
 public class AServerConnector{
 	public List<String> memo_user_list = new ArrayList<>();
 	public DatabaseConnector databaseConnector;

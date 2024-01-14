@@ -44,7 +44,6 @@ public class DatabaseConnector{
 			ResultSet rs = stmt.executeQuery(queryString);
 
 			// 得られた結果の集合から必要なデータを取り出す
-			List<String> textDataList = new ArrayList<>();
 			scoreDataList = new ArrayList<>();
 			// 0→plays 1→hits 2→wins
 
