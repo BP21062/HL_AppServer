@@ -224,42 +224,56 @@ public class GameController{
 		int current_player_score;
 		int current_hits;
 		if(choice != null){
-			//high
-			if(correct_choice.equals(choice) && correct_choice.equals("high")){
-				if(card_pattern.equals(pattern)){
-					score = 3;
-					current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
-					room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
-				}else{
-					score = -1;
+			//選んだカードがhigh
+			if(choice.equals("high")){
+				//正解がhigh
+				if(correct_choice.equals(choice)){
+					if(card_pattern.equals(pattern)){
+						//絵柄も的中
+						score = 3;
+						current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
+						room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
+					}else{
+						//絵柄的中なし
+						score = 1;
+					}
 				}
 			}
 			//low
-			if(correct_choice.equals(choice) && correct_choice.equals("low")){
-				if(card_pattern.equals(pattern)){
-					score = 3;
-					current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
-					room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
-				}else{
-					score = -1;
+			//選んだカードがlow
+			if(choice.equals("low")){
+				//正解がhigh
+				if(correct_choice.equals(choice)){
+					if(card_pattern.equals(pattern)){
+						//絵柄も的中
+						score = 3;
+						current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
+						room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
+					}else{
+						//絵柄的中なし
+						score = 1;
+					}
 				}
 			}
 			//just
-			if(correct_choice.equals(choice) && correct_choice.equals("just")){
-				if(card_pattern.equals(pattern)){
-					score = 6;
-					current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
-					room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
-				}else{
-					score = -1;
+			//選んだカードがjust
+			if(choice.equals("just")){
+				//正解がhigh
+				if(correct_choice.equals(choice)){
+					if(card_pattern.equals(pattern)){
+						//絵柄も的中
+						score = 6;
+						current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
+						room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
+					}else{
+						//絵柄的中なし
+						score = 4;
+					}
 				}
 			}
 		}
 		current_player_score = room.score_list.get(room.user_list.indexOf(user_id));
-		if(current_player_score == 0 && score < 0){
-		}else{
-			room.score_list.set(room.user_list.indexOf(user_id), current_player_score + score);
-		}
+		room.score_list.set(room.user_list.indexOf(user_id), current_player_score + score);
 
 
 	}
