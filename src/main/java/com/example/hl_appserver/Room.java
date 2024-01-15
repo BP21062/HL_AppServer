@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public class Room{
-	int room_id;
+	public int room_id;
 	public int user_count;
 	public List<String> user_list = new ArrayList<>();
 	public List<Integer> score_list = new ArrayList<>();
@@ -14,7 +14,7 @@ public class Room{
 
 	public Room(int room_id){
 		this.room_id = room_id;
-		user_count = 0;
+		this.user_count = 0;
 	}
 
 	public void increaseUserCount(String user_id){

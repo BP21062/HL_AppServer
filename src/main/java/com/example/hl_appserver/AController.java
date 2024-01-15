@@ -3,16 +3,15 @@ package com.example.hl_appserver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class AController{
 
-	static GameController game1;
-	static GameController game2;
-	static GameController game3;
-	static GameController game4;
-	static GameController game5;
-	static GameController game6;
+	public static GameController game1 = new GameController(1);
+	public static GameController game2 = new GameController(2);
+	public static GameController game3 = new GameController(3);
+	public static GameController game4 = new GameController(4);
+	public static GameController game5 = new GameController(5);
+	public static GameController game6 = new GameController(6);
 
 	/**
 	 * checkRoomCountメソッド
@@ -20,40 +19,6 @@ public class AController{
 	 * @return room_id
 	 */
 	public static boolean checkRoomState(int room_id){
-		if(room_id == 1){
-			if(Objects.isNull(game1)){
-				game1 = new GameController(1);
-			}
-		}else if(room_id == 2){
-			if(Objects.isNull(game2)){
-				game2 = new GameController(1);
-			}
-
-		}else if(room_id == 3){
-			if(Objects.isNull(game3)){
-				game3 = new GameController(1);
-			}
-
-		}else if(room_id == 4){
-			if(Objects.isNull(game4)){
-				game4 = new GameController(1);
-			}
-
-		}else if(room_id == 5){
-			if(Objects.isNull(game5)){
-				game5 = new GameController(1);
-			}
-
-		}else if(room_id == 6){
-			if(Objects.isNull(game6)){
-				game6 = new GameController(1);
-			}
-
-		}else{
-			//エラー処理
-			System.out.println("error");
-		}
-
 		return select(room_id).checkRoomState();
 	}
 
@@ -93,7 +58,7 @@ public class AController{
 				throw new RuntimeException(e);
 			}
 			for(int i=0;i<4;i++){
-				System.out.println("[App] prepareStartGame: " +AServerConnector.reverse_user_map.get(game.room.user_list.get(i)).toString());
+				System.out.println("[App] prepareStartGame: " +AServerConnector.reverse_user_map.get(game.room.user_list.get(i)).getId());
 				Message message = new Message("5002",game.room.user_list.get(i));
 				AServerConnector.sendMessage(AServerConnector.reverse_user_map.get(game.room.user_list.get(i)),message);
 			}
@@ -115,6 +80,8 @@ public class AController{
 		}else if(game6.room.user_list.contains(user_id)){
 			game6.stopUserGame(user_id);
 		}
+
+		System.out.println("[App] stopUserGame:" + user_id);
 	}
 
 

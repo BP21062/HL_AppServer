@@ -16,19 +16,10 @@ public class GameController{
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
 	public GameController(int room_id){
-		if(room_id == 1){
-			this.room = new Room(1);
-		}else if(room_id == 2){
-			this.room = new Room(2);
-		}else if(room_id == 3){
-			this.room = new Room(3);
-		}else if(room_id == 4){
-			this.room = new Room(4);
-		}else if(room_id == 5){
-			this.room = new Room(5);
-		}else if(room_id == 6){
-			this.room = new Room(6);
+		if(1 <= room_id && room_id <= 6){
+			this.room = new Room(room_id); // ルームのインスタンスを初期化
 		}
+		
 	}
 
 	public void startGame() throws IOException{
