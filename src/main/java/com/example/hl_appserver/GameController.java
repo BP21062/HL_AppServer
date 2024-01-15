@@ -358,7 +358,7 @@ public class GameController{
 
 
 	public void sendMessage(String user_id, String order){
-		Message message = new Message(user_id, order);
+		Message message = new Message(order,user_id);
 		if(order.equals("5003")){
 			message.messageContent.room_id = room.room_id;
 			message.messageContent.user_list = room.user_list;
