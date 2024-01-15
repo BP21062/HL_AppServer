@@ -9,12 +9,12 @@ import static java.lang.Thread.sleep;
 
 public class AController{
 
-	static GameController game1;
-	static GameController game2;
-	static GameController game3;
-	static GameController game4;
-	static GameController game5;
-	static GameController game6;
+	public static GameController game1 = new GameController(1);
+	public static GameController game2 = new GameController(2);
+	public static GameController game3 = new GameController(3);
+	public static GameController game4 = new GameController(4);
+	public static GameController game5 = new GameController(5);
+	public static GameController game6 = new GameController(6);
 
 	/**
 	 * checkRoomCountメソッド
