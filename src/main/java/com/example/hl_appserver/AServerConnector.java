@@ -10,9 +10,16 @@ import java.util.*;
 
 @ServerEndpoint("/playgame")
 public class AServerConnector{
+
+	// REST APIは送ってきたけど、まだWebSocketに接続してないユーザーのリスト
 	public static List<String> memo_user_list = new ArrayList<>();
+
 	private static Set<Session> establishedSessions = Collections.synchronizedSet(new HashSet<Session>());
+	
+	// Sessionとuser_idの紐づけ
 	public static Map<Session, String> user_map = new HashMap<>();
+
+	// 上の逆
 	public static Map<String, Session> reverse_user_map = new HashMap<>();
 
 	static Gson gson = new Gson();
@@ -75,6 +82,7 @@ public class AServerConnector{
 		establishedSessions.remove(session);
 		user_map.remove(session);
 		reverse_user_map.remove(user_map.get(session));
+		AController.stopUserGame(user_map.get(session));
 	}
 
 	@OnError

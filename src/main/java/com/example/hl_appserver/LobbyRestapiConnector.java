@@ -24,6 +24,7 @@ public class LobbyRestapiConnector {
 		// checkRoomStateがtrueならuser_idを記憶
 		Boolean result = AController.checkRoomState(request_message.messageContent.room_id);
 
+		// memo_user_listに追加する
 		if (result) {
 			AController.memorizeUser(request_message.messageContent.user_id);
 		}
