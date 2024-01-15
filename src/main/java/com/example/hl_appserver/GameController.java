@@ -8,27 +8,18 @@ import java.util.List;
 
 public class GameController{
 	public Room room; //紐づいてるルームのインスタンス
-	public Card card1; //一枚目のカードを５枚保存する
+	public Card card1; //１枚目のカードを５枚保存する
 	public Card card2; //２枚目のカードを５枚保存する
-	int check_success_message = 0; //クライアントの遷移確認用
+	static int check_success_message = 0; //クライアントの遷移確認用
 
 	public int game_loop = 0; //ループ回数の保存用
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
 	public GameController(int room_id){
-		if(room_id == 1){
-			this.room = new Room(1);
-		}else if(room_id == 2){
-			this.room = new Room(2);
-		}else if(room_id == 3){
-			this.room = new Room(3);
-		}else if(room_id == 4){
-			this.room = new Room(4);
-		}else if(room_id == 5){
-			this.room = new Room(5);
-		}else if(room_id == 6){
-			this.room = new Room(6);
+		if(1 <= room_id && room_id <= 6){
+			this.room = new Room(room_id); // ルームのインスタンスを初期化
 		}
+		
 	}
 
 	public void startGame() throws IOException{
@@ -96,12 +87,11 @@ public class GameController{
 	}
 
 	public void enterRoom(String user_id){//引数をroom_idからuser_idに変更
-		this.room.increaseUserCount(user_id);
+		room.increaseUserCount(user_id);
 	}
 
 	public void exitRoom(String user_id){
 		room.decreaseUserCount(user_id);
-		room.user_list.remove(user_id);
 		//sendMessage 人の増減でクライアントに在室人数を通知する
 	}
 
@@ -122,6 +112,8 @@ public class GameController{
 	public void checkSuccessMessage(String order) throws IOException{
 		if(order.equals("1004")){
 			check_success_message++;
+			System.out.println("[App] checkSuccessMessage 1004 count: " + check_success_message);
+			System.out.println("[App] checkSuccessMessage 1004 inroom: " + room.user_count);
 			if(check_success_message == room.user_count){
 				check_success_message = 0;
 				try{
@@ -133,6 +125,8 @@ public class GameController{
 			}
 		}else if(order.equals("1005")){
 			check_success_message++;
+			System.out.println("[App] checkSuccessMessage 1005 count: " + check_success_message);
+			System.out.println("[App] checkSuccessMessage 1005 inroom: " + room.user_count);
 			if(check_success_message == room.user_count){
 				check_success_message = 0;
 				//１枚目を表示するメッセージを送信
@@ -142,6 +136,8 @@ public class GameController{
 			}
 		}else if(order.equals("1006")){
 			check_success_message++;
+			System.out.println("[App] checkSuccessMessage 1006 count: " + check_success_message);
+			System.out.println("[App] checkSuccessMessage 1006 inroom: " + room.user_count);
 			if(check_success_message == room.user_count){
 				check_success_message = 0;
 				//タイマーをスタート
@@ -150,6 +146,8 @@ public class GameController{
 			}
 		}else if(order.equals("1008")){
 			check_success_message++;
+			System.out.println("[App] checkSuccessMessage 1008 count: " + check_success_message);
+			System.out.println("[App] checkSuccessMessage 1008 inroom: " + room.user_count);
 			if(check_success_message == room.user_count){
 				check_success_message = 0;
 				//ゲームをループ

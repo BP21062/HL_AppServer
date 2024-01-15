@@ -2,31 +2,39 @@ package com.example.hl_appserver;
 
 import com.google.gson.Gson;
 
-import javax.websocket.*;
-import javax.websocket.server.ServerEndpoint;
+import jakarta.websocket.*;
+import jakarta.websocket.server.ServerEndpoint;
+
 import java.io.IOException;
 import java.util.*;
 
 @ServerEndpoint("/playgame")
 public class AServerConnector{
+
+	// REST APIは送ってきたけど、まだWebSocketに接続してないユーザーのリスト
 	public static List<String> memo_user_list = new ArrayList<>();
+
 	private static Set<Session> establishedSessions = Collections.synchronizedSet(new HashSet<Session>());
-	public static Map<Session,String> user_map = new HashMap<>();
-	public static Map<String,Session> reverse_user_map = new HashMap<>();
+	
+	// Sessionとuser_idの紐づけ
+	public static Map<Session, String> user_map = new HashMap<>();
+
+	// 上の逆
+	public static Map<String, Session> reverse_user_map = new HashMap<>();
 
 	static Gson gson = new Gson();
 
 	@OnOpen
-	public void onOpen(Session session, EndpointConfig ec){
-		//セッションを記憶
+	public void onOpen(Session session, EndpointConfig ec) {
+		// セッションを記憶
 		establishedSessions.add(session);
-		//ログに出力
-		System.out.println("[WebSocketServer] onOpen:" + session.getId());
+		// ログに出力
+		System.out.println("[App] onOpen:" + session.getId());
 	}
 
 	@OnMessage
-	public void onMessage(final String message, final Session session) throws IOException{
-		System.out.println("[WebSocketServerExample] onMessage from (session: " + session.getId() + ") msg: " + message);
+	public void onMessage(final String message, final Session session) throws IOException {
+		System.out.println("[App] onMessage from (session: " + session.getId() + ") msg: " + message);
 		// 変換：String -> SampleMessage
 		Message receivedMessage = gson.fromJson(message, Message.class);
 		//通信規則ごとの立ち回りを記述
@@ -62,42 +70,42 @@ public class AServerConnector{
 			AController.enterRoom(receivedMessage.messageContent.room_id, receivedMessage.messageContent.user_id);
 		}else if(receivedMessage.order.equals("test")){
 			System.out.println("成功!!!!");
-			Message message77777 = new Message("ok","ok");
+			Message message77777 = new Message("ok", "ok");
 			sendMessage(session, message77777);
 
 		}
 	}
 
 	@OnClose
-	public void onClose(Session session){
-		System.out.println("[WebSocketServerExample] onClose:" + session.getId());
+	public void onClose(Session session) {
+		System.out.println("[App] onClose:" + session.getId());
 		establishedSessions.remove(session);
-		user_map.remove(session);
 		reverse_user_map.remove(user_map.get(session));
+		AController.stopUserGame(user_map.get(session));
+		user_map.remove(session);
 	}
 
 	@OnError
 	public void onError(Session session, Throwable error){
-		System.out.println("[WebSocketServerExample] onError:" + session.getId());
-		System.out.println("[WebSocketServerExample] Cause by" + error.getMessage());
+		System.out.println("[App] onError:" + session.getId());
+		System.out.println("[App] Cause by" + error.getMessage());
 		try{
 			AController.stopUserGame(user_map.get(session));
 			session.close();
 
-
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-
 	public static void sendMessage(Session session, Message message){
 		String send_message = gson.toJson(message);
-		try{
+		System.out.println("[App] sendMessage:" + send_message);
+		try {
 			// 同期送信（sync）
 			session.getBasicRemote().sendText(send_message);
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -114,7 +122,7 @@ public class AServerConnector{
 	public static void closeSession(String user_id) throws IOException{
 		try{
 			reverse_user_map.get(user_id).close();
-		}catch(IOException e){
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
