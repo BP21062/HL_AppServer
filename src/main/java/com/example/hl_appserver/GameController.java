@@ -320,10 +320,10 @@ public class GameController{
 			card2.saveCard(all_card_list.get(num), num + 1);
 		}
 
-		pattern_list.set(0, 0);//spade
-		pattern_list.set(1, 0);//club
-		pattern_list.set(2, 0);//dia
-		pattern_list.set(3, 0);//heart
+		pattern_list.add(0);//spade
+		pattern_list.add(0);//club
+		pattern_list.add(0);//dia
+		pattern_list.add(0);//heart
 
 		//pattern_list更新用
 		int current_point;
