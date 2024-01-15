@@ -87,12 +87,11 @@ public class GameController{
 	}
 
 	public void enterRoom(String user_id){//引数をroom_idからuser_idに変更
-		this.room.increaseUserCount(user_id);
+		room.increaseUserCount(user_id);
 	}
 
 	public void exitRoom(String user_id){
 		room.decreaseUserCount(user_id);
-		room.user_list.remove(user_id);
 		//sendMessage 人の増減でクライアントに在室人数を通知する
 	}
 

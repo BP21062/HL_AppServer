@@ -19,9 +19,9 @@ public class Room{
 
 	public void increaseUserCount(String user_id){
 		this.user_count += 1;
-		this.user_list.add(user_id);
 		this.score_list.add(0);
 		this.hit_list.add(0);
+		this.user_list.add(user_id);
 	}
 
 
