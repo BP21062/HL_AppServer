@@ -60,6 +60,7 @@ public class AController{
 			for(int i=0;i<4;i++){
 				System.out.println("[App] prepareStartGame: " +AServerConnector.reverse_user_map.get(game.room.user_list.get(i)).getId());
 				Message message = new Message("5002",game.room.user_list.get(i));
+				message.messageContent.room_id = game.room.room_id;
 				AServerConnector.sendMessage(AServerConnector.reverse_user_map.get(game.room.user_list.get(i)),message);
 			}
 		}
