@@ -80,9 +80,9 @@ public class AServerConnector{
 	public void onClose(Session session) {
 		System.out.println("[App] onClose:" + session.getId());
 		establishedSessions.remove(session);
-		user_map.remove(session);
 		reverse_user_map.remove(user_map.get(session));
 		AController.stopUserGame(user_map.get(session));
+		user_map.remove(session);
 	}
 
 	@OnError
