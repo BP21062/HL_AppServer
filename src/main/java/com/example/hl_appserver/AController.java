@@ -16,6 +16,7 @@ public class AController{
 	/**
 	 * checkRoomCountメソッド
 	 * ルームに入れるかどうかを返す
+	 *
 	 * @return room_id
 	 */
 	public static boolean checkRoomState(int room_id){
@@ -24,28 +25,21 @@ public class AController{
 
 	public static void enterRoom(int room_id, String user_id){//引数にuser_idを追加
 		if(room_id == 1){
-			game1.enterRoom(user_id);
-			prepareStartGame(game1);
+			game1.enterRoom(user_id); prepareStartGame(game1);
 		}else if(room_id == 2){
-			game2.enterRoom(user_id);
-			prepareStartGame(game2);
+			game2.enterRoom(user_id); prepareStartGame(game2);
 		}else if(room_id == 3){
-			game3.enterRoom(user_id);
-			prepareStartGame(game3);
+			game3.enterRoom(user_id); prepareStartGame(game3);
 		}else if(room_id == 4){
-			game4.enterRoom(user_id);
-			prepareStartGame(game4);
+			game4.enterRoom(user_id); prepareStartGame(game4);
 		}else if(room_id == 5){
-			game5.enterRoom(user_id);
-			prepareStartGame(game5);
+			game5.enterRoom(user_id); prepareStartGame(game5);
 		}else if(room_id == 6){
-			game6.enterRoom(user_id);
-			prepareStartGame(game6);
+			game6.enterRoom(user_id); prepareStartGame(game6);
 		}else{
 			//エラー処理
 			System.out.println("Error");
-		}
-		System.out.println("[App] enterRoom:" + user_id);
+		} System.out.println("[App] enterRoom:" + user_id);
 	}
 
 	//開始画面画面切り替えのためのsendMessageメソッド
@@ -56,12 +50,11 @@ public class AController{
 				Thread.sleep(5000);
 			}catch(InterruptedException e){
 				throw new RuntimeException(e);
-			}
-			for(int i=0;i<4;i++){
-				System.out.println("[App] prepareStartGame: " +AServerConnector.reverse_user_map.get(game.room.user_list.get(i)).getId());
-				Message message = new Message("5002",game.room.user_list.get(i));
+			} for(int i = 0; i < 4; i++){
+				System.out.println("[App] prepareStartGame: " + AServerConnector.reverse_user_map.get(game.room.user_list.get(i)).getId());
+				Message message = new Message("5002", game.room.user_list.get(i));
 				message.messageContent.room_id = game.room.room_id;
-				AServerConnector.sendMessage(AServerConnector.reverse_user_map.get(game.room.user_list.get(i)),message);
+				AServerConnector.sendMessage(AServerConnector.reverse_user_map.get(game.room.user_list.get(i)), message);
 			}
 		}
 
@@ -86,9 +79,7 @@ public class AController{
 	}
 
 
-
-
-	public static void calculateScore(int room_id,String user_id, String choice, String pattern){
+	public static void calculateScore(int room_id, String user_id, String choice, String pattern){
 		select(room_id).calculateScore(user_id, choice, pattern);
 	}
 
@@ -109,12 +100,10 @@ public class AController{
 	}
 
 
-	public static void checkSuccessMessage(int room_id, String order) throws IOException{
-		try{
-			select(room_id).checkSuccessMessage(order);
-		}catch(IOException e){
-			throw new RuntimeException(e);
-		}
+	public static void checkSuccessMessage(int room_id, String order){
+
+		select(room_id).checkSuccessMessage(order);
+
 	}
 
 
@@ -125,22 +114,18 @@ public class AController{
 	 * @return List<Integer>
 	 */
 	public static List<Integer> checkRoomCount(){
-		List<Integer> user_count = new ArrayList<>();
-		user_count.add(game1.checkRoomCount());
-		user_count.add(game2.checkRoomCount());
-		user_count.add(game3.checkRoomCount());
-		user_count.add(game4.checkRoomCount());
-		user_count.add(game5.checkRoomCount());
-		user_count.add(game6.checkRoomCount());
-		return user_count;
+		List<Integer> user_count = new ArrayList<>(); user_count.add(game1.checkRoomCount());
+		user_count.add(game2.checkRoomCount()); user_count.add(game3.checkRoomCount());
+		user_count.add(game4.checkRoomCount()); user_count.add(game5.checkRoomCount());
+		user_count.add(game6.checkRoomCount()); return user_count;
 	}
 
 	public static void sendMessage(Message message, String user_id){
-		AServerConnector.sendMessage(AServerConnector.reverse_user_map.get(user_id),message);
+		AServerConnector.sendMessage(AServerConnector.reverse_user_map.get(user_id), message);
 	}
 
 	public static void recordResult(String user_id, int hits, boolean win){
-		AServerConnector.recordResult(user_id,hits,win);
+		AServerConnector.recordResult(user_id, hits, win);
 	}
 
 	public static void closeSession(String user_id){
@@ -154,6 +139,7 @@ public class AController{
 	public static List<String> choiceDeckAndCardList(){
 		return AServerConnector.getCardList();
 	}
+
 	public static void memorizeUser(String user_id){
 		AServerConnector.memorizeUser(user_id);
 	}
