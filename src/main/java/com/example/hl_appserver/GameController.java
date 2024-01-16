@@ -77,11 +77,9 @@ public class GameController{
 	}
 
 	public void displayCurrentPoint(){
-			int i=0;
 		for(String user : room.user_list){
 			System.out.println(room.user_list);
 			sendMessage(user, "5003");
-			i++;
 		}
 	}
 
