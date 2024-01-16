@@ -30,7 +30,7 @@ public class GameController{
 			choiceDeckAndCardList();
 			//現在のスコアを表示
 			displayCurrentPoint();
-		}else if(game_loop == 6 || room.user_count == 1){
+		}else if(game_loop == 3 || room.user_count == 1){
 			try{
 				endGame();
 			}catch(IOException e){
@@ -384,6 +384,7 @@ public class GameController{
 		}else if(order.equals("5006")){
 			message.messageContent.room_id = room.room_id;
 			message.messageContent.score_list = room.score_list;
+			message.messageContent.user_list = room.user_list;
 		}else if(order.equals("5002")){
 			message.messageContent.room_id = room.room_id;
 		}
