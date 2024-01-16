@@ -19,6 +19,8 @@ public class GameController{
 		if(1 <= room_id && room_id <= 6){
 			this.room = new Room(room_id); // ルームのインスタンスを初期化
 		}
+		this.card1 = new Card(); // card1のインスタンスを初期化
+		this.card2 = new Card(); // card2のインスタンスを初期化
 		
 	}
 
@@ -322,6 +324,7 @@ public class GameController{
 		for(Integer num : selected_5_from_20){
 			card2.saveCard(all_card_list.get(num), num + 1);
 		}
+
 
 		for(int i=0;i<4;i++){
 			pattern_list.add(i);
