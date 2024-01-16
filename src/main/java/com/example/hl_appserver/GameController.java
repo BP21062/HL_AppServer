@@ -8,8 +8,8 @@ import java.util.List;
 
 public class GameController{
 	public Room room; //紐づいてるルームのインスタンス
-	public Card card1; //１枚目のカードを５枚保存する
-	public Card card2; //２枚目のカードを５枚保存する
+	public Card card1 = new Card(); //１枚目のカードを５枚保存する
+	public Card card2 = new Card(); //２枚目のカードを５枚保存する
 	static int check_success_message = 0; //クライアントの遷移確認用
 
 	public int game_loop = 0; //ループ回数の保存用
@@ -75,13 +75,18 @@ public class GameController{
 	}
 
 	public void displayCurrentPoint(){
+			int i=0;
 		for(String user : room.user_list){
+			System.out.println(room.user_list);
 			sendMessage(user, "5003");
+			i++;
 		}
 	}
 
 	public void displayFirstCard(){
+		System.out.println(room.user_list);
 		for(String user : room.user_list){
+			System.out.println(room.user_list);
 			sendMessage(user, "5004");
 		}
 	}
@@ -125,14 +130,14 @@ public class GameController{
 			}
 		}else if(order.equals("1005")){
 			check_success_message++;
+			room.user_count = 4;
 			System.out.println("[App] checkSuccessMessage 1005 count: " + check_success_message);
 			System.out.println("[App] checkSuccessMessage 1005 inroom: " + room.user_count);
 			if(check_success_message == room.user_count){
-				check_success_message = 0;
+				System.out.println("check");
 				//１枚目を表示するメッセージを送信
 				displayFirstCard();
-
-
+				check_success_message = 0;
 			}
 		}else if(order.equals("1006")){
 			check_success_message++;
@@ -318,10 +323,16 @@ public class GameController{
 			card2.saveCard(all_card_list.get(num), num + 1);
 		}
 
+		for(int i=0;i<4;i++){
+			pattern_list.add(i);
+		}
+
 		pattern_list.set(0, 0);//spade
 		pattern_list.set(1, 0);//club
 		pattern_list.set(2, 0);//dia
 		pattern_list.set(3, 0);//heart
+
+		//System.out.println("check");
 
 		//pattern_list更新用
 		int current_point;
@@ -356,7 +367,7 @@ public class GameController{
 
 
 	public void sendMessage(String user_id, String order){
-		Message message = new Message(user_id, order);
+		Message message = new Message(order, user_id);
 		if(order.equals("5003")){
 			message.messageContent.room_id = room.room_id;
 			message.messageContent.game_loop = game_loop;
