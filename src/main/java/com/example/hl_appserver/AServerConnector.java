@@ -101,7 +101,12 @@ public class AServerConnector{
 
 	public static void sendMessage(Session session, Message message){
 		String send_message = gson.toJson(message);
-		System.out.println("[App] sendMessage:" + send_message);
+		if (message.order.equals("5005")){
+			System.out.println("[App] sendMessage: Timer");
+		}else{
+			System.out.println("[App] sendMessage:" + send_message);
+		}
+		
 		try {
 			// 同期送信（sync）
 			session.getBasicRemote().sendText(send_message);

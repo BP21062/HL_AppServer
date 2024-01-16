@@ -64,10 +64,15 @@ public class AServerTest{
 		AController.calculateScore(1, "NICO", "high", "spade");
 		assertEquals(AController.game1.room.score_list.get(0), 3);
 
-		//high +2
+		//high +1
 		AController.game1.room.score_list.set(0, 0);
 		AController.calculateScore(1, "NICO", "high", "heart");
 		assertEquals(AController.game1.room.score_list.get(0), 1);
+
+		//high +2
+		AController.game1.room.score_list.set(0, 0);
+		AController.calculateScore(1, "NICO", "high", null);
+		assertEquals(AController.game1.room.score_list.get(0), 2);
 
 	}
 
@@ -85,7 +90,7 @@ public class AServerTest{
 		AController.calculateScore(1, "NICO", "just", "club");
 		assertEquals(AController.game1.room.score_list.get(0), 6);
 
-		//just +5
+		//just +4
 		AController.game1.room.score_list.set(0, 0);
 		AController.calculateScore(1, "NICO", "just", "null");
 		assertEquals(AController.game1.room.score_list.get(0), 4);
@@ -105,7 +110,7 @@ public class AServerTest{
 		AController.calculateScore(1, "NICO", "low", "spade");
 		assertEquals(AController.game1.room.score_list.get(0), 3);
 
-		//low +2
+		//low +1
 		AController.game1.room.score_list.set(0, 0);
 		AController.calculateScore(1, "NICO", "low", "null");
 		assertEquals(AController.game1.room.score_list.get(0), 1);

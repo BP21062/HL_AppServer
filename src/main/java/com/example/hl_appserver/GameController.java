@@ -1,7 +1,6 @@
 package com.example.hl_appserver;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,10 +20,10 @@ public class GameController{
 		}
 		this.card1 = new Card(); // card1のインスタンスを初期化
 		this.card2 = new Card(); // card2のインスタンスを初期化
-		
+
 	}
 
-	public void startGame() throws IOException{
+	public void startGame(){
 		//game_loopを1増やす
 		game_loop++;
 		if(game_loop == 1){
@@ -32,12 +31,9 @@ public class GameController{
 			choiceDeckAndCardList();
 			//現在のスコアを表示
 			displayCurrentPoint();
-		}else if(game_loop == 3 || room.user_count == 1){
-			try{
-				endGame();
-			}catch(IOException e){
-				throw new RuntimeException(e);
-			}
+		}else if(game_loop == 6 || room.user_count == 1){
+
+			endGame();
 		}else{
 			//現在のスコアを表示
 			displayCurrentPoint();
@@ -45,7 +41,7 @@ public class GameController{
 
 	}
 
-	public void endGame() throws IOException{
+	public void endGame(){
 		//最終スコアの送信
 		for(String user : room.user_list){
 			sendMessage(user, "5006");
@@ -55,6 +51,10 @@ public class GameController{
 			AController.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
 		}
 
+		this.game_loop = 0;
+		this.card1 = new Card(); // card1のインスタンスを初期化
+		this.card2 = new Card(); // card2のインスタンスを初期化
+
 		//全員のsessionをクローズ
 		for(String user : room.user_list){
 			AController.closeSession(user);
@@ -62,10 +62,8 @@ public class GameController{
 
 
 		//各変数の初期化
-		game_loop = 0;
-		this.room = new Room(room.room_id); // ルームのインスタンスを初期化
-		this.card1 = new Card(); // card1のインスタンスを初期化
-		this.card2 = new Card(); // card2のインスタンスを初期化
+		//this.room = new Room(room.room_id); // ルームのインスタンスを初期化
+
 	}
 
 	public boolean checkWinner(int player){
@@ -77,11 +75,9 @@ public class GameController{
 	}
 
 	public void displayCurrentPoint(){
-			int i=0;
 		for(String user : room.user_list){
 			System.out.println(room.user_list);
 			sendMessage(user, "5003");
-			i++;
 		}
 	}
 
@@ -97,10 +93,6 @@ public class GameController{
 		room.increaseUserCount(user_id);
 	}
 
-	public void exitRoom(String user_id){
-		room.decreaseUserCount(user_id);
-		//sendMessage 人の増減でクライアントに在室人数を通知する
-	}
 
 	public void stopUserGame(String user_id){
 		room.stopUserGame(user_id);
@@ -116,23 +108,19 @@ public class GameController{
 	}
 
 
-	public void checkSuccessMessage(String order) throws IOException{
+	public void checkSuccessMessage(String order){
 		if(order.equals("1004")){
 			check_success_message++;
 			System.out.println("[App] checkSuccessMessage 1004 count: " + check_success_message);
 			System.out.println("[App] checkSuccessMessage 1004 inroom: " + room.user_count);
 			if(check_success_message == room.user_count){
 				check_success_message = 0;
-				try{
-					startGame();
-				}catch(IOException e){
-					throw new RuntimeException(e);
-				}
+
+				startGame();
 
 			}
 		}else if(order.equals("1005")){
 			check_success_message++;
-			room.user_count = 4;
 			System.out.println("[App] checkSuccessMessage 1005 count: " + check_success_message);
 			System.out.println("[App] checkSuccessMessage 1005 inroom: " + room.user_count);
 			if(check_success_message == room.user_count){
@@ -185,10 +173,12 @@ public class GameController{
 
 
 	}
+
 	public int setCardNumber(int num){
 		if(num % 13 == 0){
 			return 13;
-		}else return (num % 13);
+		}else
+			return (num % 13);
 	}
 
 	public void calculateScore(String user_id, String choice, String pattern){
@@ -235,14 +225,15 @@ public class GameController{
 			if(choice.equals("high")){
 				//正解がhigh
 				if(correct_choice.equals(choice)){
+					score = score + 2;
 					if(card_pattern.equals(pattern)){
 						//絵柄も的中
-						score = 3;
+						score = score + 1;
 						current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
 						room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
-					}else{
+					}else if(pattern != null){
 						//絵柄的中なし
-						score = 1;
+						score = score - 1;
 					}
 				}
 			}
@@ -251,14 +242,15 @@ public class GameController{
 			if(choice.equals("low")){
 				//正解がhigh
 				if(correct_choice.equals(choice)){
+					score = score + 2;
 					if(card_pattern.equals(pattern)){
 						//絵柄も的中
-						score = 3;
+						score = score + 1;
 						current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
 						room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
-					}else{
+					}else if(pattern != null){
 						//絵柄的中なし
-						score = 1;
+						score = score - 1;
 					}
 				}
 			}
@@ -267,14 +259,15 @@ public class GameController{
 			if(choice.equals("just")){
 				//正解がhigh
 				if(correct_choice.equals(choice)){
+					score = score + 5;
 					if(card_pattern.equals(pattern)){
 						//絵柄も的中
-						score = 6;
+						score = score + 1;
 						current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
 						room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
-					}else{
+					}else if(pattern != null){
 						//絵柄的中なし
-						score = 4;
+						score = score - 1;
 					}
 				}
 			}
@@ -326,7 +319,7 @@ public class GameController{
 		}
 
 
-		for(int i=0;i<4;i++){
+		for(int i = 0; i < 4; i++){
 			pattern_list.add(i);
 		}
 
@@ -335,7 +328,6 @@ public class GameController{
 		pattern_list.set(2, 0);//dia
 		pattern_list.set(3, 0);//heart
 
-		//System.out.println("check");
 
 		//pattern_list更新用
 		int current_point;
