@@ -102,9 +102,11 @@ public class AServerConnector{
 	public static void sendMessage(Session session, Message message){
 		String send_message = gson.toJson(message);
 		if (message.order.equals("5005")){
-			System.out.println("[App] sendMessage: Timer");
+			System.out.println("[App] sendMessage: SecondCard");
+		}else if (message.order.equals("5004")){
+			System.out.println("[App] sendMessage: FirstCard");
 		}else{
-			System.out.println("[App] sendMessage:" + send_message);
+			System.out.println("[App] sendMessage: " + message.order);
 		}
 		
 		try {
