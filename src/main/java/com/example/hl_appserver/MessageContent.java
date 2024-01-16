@@ -10,6 +10,7 @@ public class MessageContent{
 	int room_id;//入りたい部屋もしくは入ってる部屋
 	String choice;//選んだ選択肢を代入
 	String pattern;//選んだ絵柄を代入
+	int game_loop;
 	List<String> user_list = new ArrayList<>();
 	List<Integer> score_list = new ArrayList<>();
 	List<Integer> pattern_list = new ArrayList<>();

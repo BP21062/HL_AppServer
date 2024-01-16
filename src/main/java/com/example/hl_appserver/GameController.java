@@ -359,6 +359,7 @@ public class GameController{
 		Message message = new Message(user_id, order);
 		if(order.equals("5003")){
 			message.messageContent.room_id = room.room_id;
+			message.messageContent.game_loop = game_loop;
 			message.messageContent.user_list = room.user_list;
 			message.messageContent.score_list = room.score_list;
 		}else if(order.equals("5004")){
