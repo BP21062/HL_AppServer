@@ -93,10 +93,6 @@ public class GameController{
 		room.increaseUserCount(user_id);
 	}
 
-	public void exitRoom(String user_id){
-		room.decreaseUserCount(user_id);
-		//sendMessage 人の増減でクライアントに在室人数を通知する
-	}
 
 	public void stopUserGame(String user_id){
 		room.stopUserGame(user_id);
@@ -229,14 +225,15 @@ public class GameController{
 			if(choice.equals("high")){
 				//正解がhigh
 				if(correct_choice.equals(choice)){
+					score = score + 2;
 					if(card_pattern.equals(pattern)){
 						//絵柄も的中
-						score = 3;
+						score = score + 1;
 						current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
 						room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
-					}else{
+					}else if(pattern != null){
 						//絵柄的中なし
-						score = 1;
+						score = score - 1;
 					}
 				}
 			}
@@ -245,14 +242,15 @@ public class GameController{
 			if(choice.equals("low")){
 				//正解がhigh
 				if(correct_choice.equals(choice)){
+					score = score + 2;
 					if(card_pattern.equals(pattern)){
 						//絵柄も的中
-						score = 3;
+						score = score + 1;
 						current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
 						room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
-					}else{
+					}else if(pattern != null){
 						//絵柄的中なし
-						score = 1;
+						score = score - 1;
 					}
 				}
 			}
@@ -261,14 +259,15 @@ public class GameController{
 			if(choice.equals("just")){
 				//正解がhigh
 				if(correct_choice.equals(choice)){
+					score = score + 5;
 					if(card_pattern.equals(pattern)){
 						//絵柄も的中
-						score = 6;
+						score = score + 1;
 						current_hits = room.hit_list.get(room.user_list.indexOf(user_id));
 						room.hit_list.set(room.user_list.indexOf(user_id), current_hits + 1);
-					}else{
+					}else if(pattern != null){
 						//絵柄的中なし
-						score = 4;
+						score = score - 1;
 					}
 				}
 			}
@@ -329,7 +328,6 @@ public class GameController{
 		pattern_list.set(2, 0);//dia
 		pattern_list.set(3, 0);//heart
 
-		//System.out.println("check");
 
 		//pattern_list更新用
 		int current_point;
