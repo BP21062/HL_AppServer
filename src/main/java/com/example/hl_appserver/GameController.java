@@ -7,20 +7,23 @@ import java.util.List;
 
 public class GameController{
 	public Room room; //紐づいてるルームのインスタンス
-	public Card card1 = new Card(); //１枚目のカードを５枚保存する
-	public Card card2 = new Card(); //２枚目のカードを５枚保存する
-	public int check_success_message = 0; //クライアントの遷移確認用
+	public Card card1; //１枚目のカードを５枚保存する
+	public Card card2; //２枚目のカードを５枚保存する
+	public int check_success_message; //クライアントの遷移確認用
 
-	public int game_loop = 0; //ループ回数の保存用
-	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
+	public int game_loop; //ループ回数の保存用
+	public List<Integer> pattern_list; //２０枚の絵柄管理用
 
 	public GameController(int room_id){
 		if(1 <= room_id && room_id <= 6){
 			this.room = new Room(room_id); // ルームのインスタンスを初期化
 		}
+
 		this.card1 = new Card(); // card1のインスタンスを初期化
 		this.card2 = new Card(); // card2のインスタンスを初期化
-
+		this.check_success_message = 0; //クライアントの遷移確認用
+		this.game_loop = 0; //ループ回数の保存用
+		this.pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 	}
 
 	public void startGame(){
@@ -103,7 +106,7 @@ public class GameController{
 
 
 	public boolean checkRoomState(){
-		if(room.user_count == 4 && game_loop == 0){
+		if(room.user_count == 4 || game_loop != 0){
 			return false;
 		}else{
 			return true;
