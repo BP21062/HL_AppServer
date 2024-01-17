@@ -7,20 +7,27 @@ import java.util.List;
 
 public class GameController{
 	public Room room; //紐づいてるルームのインスタンス
-	public Card card1 = new Card(); //１枚目のカードを５枚保存する
-	public Card card2 = new Card(); //２枚目のカードを５枚保存する
-	static int check_success_message = 0; //クライアントの遷移確認用
+	public Card card1; //１枚目のカードを５枚保存する
+	public Card card2; //２枚目のカードを５枚保存する
+	public int check_success_message; //クライアントの遷移確認用
 
-	public int game_loop = 0; //ループ回数の保存用
-	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
+	public int game_loop; //ループ回数の保存用
+	public List<Integer> pattern_list; //２０枚の絵柄管理用
 
 	public GameController(int room_id){
 		if(1 <= room_id && room_id <= 6){
 			this.room = new Room(room_id); // ルームのインスタンスを初期化
 		}
+
 		this.card1 = new Card(); // card1のインスタンスを初期化
 		this.card2 = new Card(); // card2のインスタンスを初期化
+		this.check_success_message = 0; //クライアントの遷移確認用
+		this.game_loop = 0; //ループ回数の保存用
+		this.pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
 
+		for(int i = 0; i < 4; i++){
+			pattern_list.add(0);
+		}
 	}
 
 	public void startGame(){
@@ -51,18 +58,26 @@ public class GameController{
 			AController.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
 		}
 
-		this.game_loop = 0;
+		game_loop = 0;
 		this.card1 = new Card(); // card1のインスタンスを初期化
 		this.card2 = new Card(); // card2のインスタンスを初期化
 
-		//全員のsessionをクローズ
+		// user_listのコピーを作成
+		List <String> user_list_temp = new ArrayList<>();
+		
+		// 全部消したために狂っているのではないかと考察⇒正しかった
 		for(String user : room.user_list){
+			user_list_temp.add(user);
+		}
+
+		//全員のsessionをクローズ
+		for(String user : user_list_temp){
 			AController.closeSession(user);
 		}
 
 
 		//各変数の初期化
-		//this.room = new Room(room.room_id); // ルームのインスタンスを初期化
+		this.room = new Room(room.room_id); // ルームのインスタンスを初期化
 
 	}
 
@@ -76,15 +91,12 @@ public class GameController{
 
 	public void displayCurrentPoint(){
 		for(String user : room.user_list){
-			System.out.println(room.user_list);
 			sendMessage(user, "5003");
 		}
 	}
 
 	public void displayFirstCard(){
-		System.out.println(room.user_list);
 		for(String user : room.user_list){
-			System.out.println(room.user_list);
 			sendMessage(user, "5004");
 		}
 	}
@@ -93,14 +105,12 @@ public class GameController{
 		room.increaseUserCount(user_id);
 	}
 
-
 	public void stopUserGame(String user_id){
 		room.stopUserGame(user_id);
 	}
 
-
 	public boolean checkRoomState(){
-		if(room.user_count == 4){
+		if(room.user_count == 4 || game_loop != 0){
 			return false;
 		}else{
 			return true;
@@ -124,10 +134,10 @@ public class GameController{
 			System.out.println("[App] checkSuccessMessage 1005 count: " + check_success_message);
 			System.out.println("[App] checkSuccessMessage 1005 inroom: " + room.user_count);
 			if(check_success_message == room.user_count){
-				System.out.println("check");
+				check_success_message = 0;
 				//１枚目を表示するメッセージを送信
 				displayFirstCard();
-				check_success_message = 0;
+				
 			}
 		}else if(order.equals("1006")){
 			check_success_message++;
@@ -164,7 +174,6 @@ public class GameController{
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
-
 		}
 
 		for(String user : room.user_list){
@@ -317,17 +326,6 @@ public class GameController{
 		for(Integer num : selected_5_from_20){
 			card2.saveCard(all_card_list.get(num), num + 1);
 		}
-
-
-		for(int i = 0; i < 4; i++){
-			pattern_list.add(i);
-		}
-
-		pattern_list.set(0, 0);//spade
-		pattern_list.set(1, 0);//club
-		pattern_list.set(2, 0);//dia
-		pattern_list.set(3, 0);//heart
-
 
 		//pattern_list更新用
 		int current_point;
