@@ -9,7 +9,7 @@ public class GameController{
 	public Room room; //紐づいてるルームのインスタンス
 	public Card card1 = new Card(); //１枚目のカードを５枚保存する
 	public Card card2 = new Card(); //２枚目のカードを５枚保存する
-	static int check_success_message = 0; //クライアントの遷移確認用
+	public int check_success_message = 0; //クライアントの遷移確認用
 
 	public int game_loop = 0; //ループ回数の保存用
 	public List<Integer> pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
@@ -55,14 +55,20 @@ public class GameController{
 		this.card1 = new Card(); // card1のインスタンスを初期化
 		this.card2 = new Card(); // card2のインスタンスを初期化
 
+		List <String> user_list_temp = new ArrayList<>();
 		//全員のsessionをクローズ
 		for(String user : room.user_list){
+			user_list_temp.add(user);
+		}
+
+		// 全部消したために狂っているのではないかと考察⇒正しかった
+		for(String user : user_list_temp){
 			AController.closeSession(user);
 		}
 
 
 		//各変数の初期化
-		//this.room = new Room(room.room_id); // ルームのインスタンスを初期化
+		this.room = new Room(room.room_id); // ルームのインスタンスを初期化
 
 	}
 
@@ -76,7 +82,6 @@ public class GameController{
 
 	public void displayCurrentPoint(){
 		for(String user : room.user_list){
-			System.out.println(room.user_list);
 			sendMessage(user, "5003");
 		}
 	}
@@ -84,7 +89,6 @@ public class GameController{
 	public void displayFirstCard(){
 		System.out.println(room.user_list);
 		for(String user : room.user_list){
-			System.out.println(room.user_list);
 			sendMessage(user, "5004");
 		}
 	}
@@ -124,10 +128,10 @@ public class GameController{
 			System.out.println("[App] checkSuccessMessage 1005 count: " + check_success_message);
 			System.out.println("[App] checkSuccessMessage 1005 inroom: " + room.user_count);
 			if(check_success_message == room.user_count){
-				System.out.println("check");
+				check_success_message = 0;
 				//１枚目を表示するメッセージを送信
 				displayFirstCard();
-				check_success_message = 0;
+				
 			}
 		}else if(order.equals("1006")){
 			check_success_message++;
