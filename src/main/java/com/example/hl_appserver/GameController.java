@@ -24,6 +24,10 @@ public class GameController{
 		this.check_success_message = 0; //クライアントの遷移確認用
 		this.game_loop = 0; //ループ回数の保存用
 		this.pattern_list = new ArrayList<>(); //２０枚の絵柄管理用
+
+		for(int i = 0; i < 4; i++){
+			pattern_list.add(0);
+		}
 	}
 
 	public void startGame(){
@@ -322,17 +326,6 @@ public class GameController{
 		for(Integer num : selected_5_from_20){
 			card2.saveCard(all_card_list.get(num), num + 1);
 		}
-
-
-		for(int i = 0; i < 4; i++){
-			pattern_list.add(i);
-		}
-
-		pattern_list.set(0, 0);//spade
-		pattern_list.set(1, 0);//club
-		pattern_list.set(2, 0);//dia
-		pattern_list.set(3, 0);//heart
-
 
 		//pattern_list更新用
 		int current_point;
