@@ -58,13 +58,15 @@ public class GameController{
 		this.card1 = new Card(); // card1のインスタンスを初期化
 		this.card2 = new Card(); // card2のインスタンスを初期化
 
+		// user_listのコピーを作成
 		List <String> user_list_temp = new ArrayList<>();
-		//全員のsessionをクローズ
+		
+		// 全部消したために狂っているのではないかと考察⇒正しかった
 		for(String user : room.user_list){
 			user_list_temp.add(user);
 		}
 
-		// 全部消したために狂っているのではないかと考察⇒正しかった
+		//全員のsessionをクローズ
 		for(String user : user_list_temp){
 			AController.closeSession(user);
 		}
@@ -99,11 +101,9 @@ public class GameController{
 		room.increaseUserCount(user_id);
 	}
 
-
 	public void stopUserGame(String user_id){
 		room.stopUserGame(user_id);
 	}
-
 
 	public boolean checkRoomState(){
 		if(room.user_count == 4 || game_loop != 0){
@@ -170,7 +170,6 @@ public class GameController{
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
-
 		}
 
 		for(String user : room.user_list){
