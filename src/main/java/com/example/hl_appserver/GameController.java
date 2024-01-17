@@ -51,7 +51,7 @@ public class GameController{
 			AController.recordResult(room.user_list.get(i), room.hit_list.get(i), checkWinner(i));
 		}
 
-		this.game_loop = 0;
+		game_loop = 0;
 		this.card1 = new Card(); // card1のインスタンスを初期化
 		this.card2 = new Card(); // card2のインスタンスを初期化
 
@@ -87,7 +87,6 @@ public class GameController{
 	}
 
 	public void displayFirstCard(){
-		System.out.println(room.user_list);
 		for(String user : room.user_list){
 			sendMessage(user, "5004");
 		}
@@ -104,7 +103,7 @@ public class GameController{
 
 
 	public boolean checkRoomState(){
-		if(room.user_count == 4){
+		if(room.user_count == 4 && game_loop == 0){
 			return false;
 		}else{
 			return true;
